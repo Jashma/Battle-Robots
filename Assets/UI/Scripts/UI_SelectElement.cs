@@ -5,25 +5,29 @@ using UnityEngine.UI;
 
 public class UI_SelectElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, ISubmitHandler, ISelectHandler
 {
-    
+    private Color normalColor = Color.white;
+    private Color highlightColorInitial = Color.white;
+    private Color highlightColorFadeTo = Color.white;
+    public float fadeSpeed = 0.5f;
+
     public bool activeThisObj = true;
-    public Color normalColor;
-    public Color highlightColorInitial;
-    public Color highlightColorFadeTo;
-    public float fadeSpeed = 0.75f;
+    public Image[] arrayImages = new Image[0];
+
     private float t;
     private bool fadeDown = true;
     private bool changeObj = false;
-
     private Button button;
     private Slider slider;
     private Scrollbar scrollbar;
-
-    public Image[] arrayImages = new Image[0];
     private Vector3 lastPointerPositon;
 
     void Start()
     {
+        //normalColor = UI_Controller.instance.elementMenuColor;
+        //highlightColorInitial = UI_Controller.instance.elementMenuColor;
+        //highlightColorFadeTo = UI_Controller.instance.elementMenuColor;
+        highlightColorInitial.a = 0.5f;
+
         //Если ссылки не назначены в инспекторе, назначаем компоненты на всех дочерних обьектах
         if (arrayImages.Length == 0)
         {
@@ -49,7 +53,7 @@ public class UI_SelectElement : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         if (activeThisObj == true)
         {
-            if (UI_Controller.instance.currentMouseOverGameObject == gameObject && Input.mousePosition != lastPointerPositon)
+            if (UI_Controller.Instance.currentMouseOverGameObject == gameObject && Input.mousePosition != lastPointerPositon)
             {
                 EventSystem.current.SetSelectedGameObject(gameObject);
             }
@@ -58,21 +62,21 @@ public class UI_SelectElement : MonoBehaviour, IPointerEnterHandler, IPointerExi
             lastPointerPositon = Input.mousePosition;
         }
     }
-     
-     public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (activeThisObj == true)
-        {
-            UI_Controller.instance.currentMouseOverGameObject = gameObject;
-            EventSystem.current.SetSelectedGameObject(gameObject);
-        }
-    }
+
+   public void OnPointerEnter(PointerEventData eventData)
+   {
+       if (activeThisObj == true)
+       {
+           UI_Controller.Instance.currentMouseOverGameObject = gameObject;
+           EventSystem.current.SetSelectedGameObject(gameObject);
+       }
+   }
       
     public void OnPointerExit(PointerEventData eventData)
     {
         if (activeThisObj == true)
         {
-            UI_Controller.instance.currentMouseOverGameObject = null;
+            UI_Controller.Instance.currentMouseOverGameObject = null;
             EventSystem.current.SetSelectedGameObject(null);
         }
     }
@@ -94,7 +98,7 @@ public class UI_SelectElement : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 return;
             }
 
-            UI_Controller.instance.currentButton = button;
+            UI_Controller.Instance.currentButton = button;
             UI_AudioManager.instance.PlayClickSound();
         }
     }
@@ -108,7 +112,7 @@ public class UI_SelectElement : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 return;
             }
 
-            UI_Controller.instance.currentButton = button;
+            UI_Controller.Instance.currentButton = button;
             UI_AudioManager.instance.PlayClickSound();
         }
     }

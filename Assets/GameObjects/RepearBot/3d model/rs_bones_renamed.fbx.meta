@@ -1,0 +1,159 @@
+fileFormatVersion: 2
+guid: 1bc70fa4207b1d64097713e5a4d79484
+timeCreated: 1477927613
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: arm_1_1
+    100002: arm_1_2
+    100004: arm_1_3
+    100006: arm_2_1
+    100008: arm_2_2
+    100010: arm_2_3
+    100012: arm_3_1
+    100014: arm_3_2
+    100016: arm_3_3
+    100018: cover_1
+    100020: cover_2
+    100022: cover_3
+    100024: finger_1_1
+    100026: finger_1_2
+    100028: finger_2_1
+    100030: finger_2_2
+    100032: finger_3_1
+    100034: finger_3_2
+    100036: ikHandle1
+    100038: ikHandle2
+    100040: ikHandle3
+    100042: joint10
+    100044: joint21
+    100046: joint21 1
+    100048: joint23
+    100050: joint25
+    100052: joint27
+    100054: joint29
+    100056: joint31
+    100058: joint35
+    100060: joint37
+    100062: joint7
+    100064: joint7 1
+    100066: joint9
+    100068: joint9 1
+    100070: root_bone
+    100072: rs:Object01
+    100074: //RootNode
+    100076: top
+    100078: wing_1
+    100080: wing_2
+    100082: wing_3
+    400000: arm_1_1
+    400002: arm_1_2
+    400004: arm_1_3
+    400006: arm_2_1
+    400008: arm_2_2
+    400010: arm_2_3
+    400012: arm_3_1
+    400014: arm_3_2
+    400016: arm_3_3
+    400018: cover_1
+    400020: cover_2
+    400022: cover_3
+    400024: finger_1_1
+    400026: finger_1_2
+    400028: finger_2_1
+    400030: finger_2_2
+    400032: finger_3_1
+    400034: finger_3_2
+    400036: ikHandle1
+    400038: ikHandle2
+    400040: ikHandle3
+    400042: joint10
+    400044: joint21
+    400046: joint21 1
+    400048: joint23
+    400050: joint25
+    400052: joint27
+    400054: joint29
+    400056: joint31
+    400058: joint35
+    400060: joint37
+    400062: joint7
+    400064: joint7 1
+    400066: joint9
+    400068: joint9 1
+    400070: root_bone
+    400072: rs:Object01
+    400074: //RootNode
+    400076: top
+    400078: wing_1
+    400080: wing_2
+    400082: wing_3
+    4300000: rs:Object01
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: rs:Object01
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 300
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

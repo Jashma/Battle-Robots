@@ -1,6 +1,2 @@
-<<<<<<< HEAD
 m_EditorVersion: 5.4.1f1
-=======
-m_EditorVersion: 5.3.4f1
->>>>>>> parent of a891378... Global update
 m_StandardAssetsVersion: 0

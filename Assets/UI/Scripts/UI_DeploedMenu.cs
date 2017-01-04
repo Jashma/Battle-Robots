@@ -24,17 +24,11 @@ public class UI_DeploedMenu : MonoBehaviour
             botPanelPrefab = Resources.Load("Prefabs/User Interface/BotPanel") as GameObject;
         }
 
-        if (deploedShipController == null)
-        {
-            if (PlayerController.startGame == true)
-            {
-                deploedShipController = PlayerController.baseController.deploedShipObj.GetComponent<DeploedShipController>();
-            }
-            else
-            {
-                Debug.Log("PlayerController.startGame == false");
-            }
-        }
+        if (toggle == null)
+        { toggle = transform.FindChild("AutoToggle").GetComponent<Toggle>(); }
+
+        if (queueBot == null)
+        { queueBot = transform.FindChild("QuoueText").GetComponent<Text>(); }
         
         if (deploedShipController != null)
         {
@@ -49,7 +43,7 @@ public class UI_DeploedMenu : MonoBehaviour
 
     void OnDisable()
     {
-        GameObject.Find("Player").GetComponent<PlayerController>().ChangePlayerState("Follow");
+        GameObject.Find("Player").GetComponent<PlayerController>().ChangePlayerState(2);//"Follow"
     }
 
     void Update()

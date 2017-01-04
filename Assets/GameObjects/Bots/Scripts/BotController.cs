@@ -3,514 +3,378 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-//Debug
 public enum SM_BotState
 {
-    Disable,
-    Dead,
+    None,
+    Destroy,
     PlayerControl,
-    OffLine,
-    AiControl,
+    Hide,
     Deploed,
+    PlayerFollow,
 }
 
-public class BotController : MonoBehaviour 
+public enum SM_BotAction
+{
+    None,
+    Repear,
+    Capture,
+    ChangeModul,
+    Wait,
+    Move,
+}
+
+public class BotController : MonoBehaviour
 {
     public SM_BotState botState;
-    public SM_BotCharacter SM_botCharacter;
-    public CharacterController characterController;
-    public BodyRotation bodyRotation;//Скрипт управляющий башней
-    public Animator animator;
-    public Animator stateMashine;
-    public NavMeshAgent navMeshAgent;
-    public NavMeshObstacle navMeshObstacle;
-    public CaptureState captureState;//Скрипт управляущий захватом базы или завода
-    public RepearState repearState;//Скрипт отвечающий за ремонт, находится на обьекте место ремонта
-    public CheckVisibleMesh checkVisibleMesh;
-    public float health;//Здоровье бота
-    public float speedWalk;
-    public float speedRotate;
+    public SM_BotAction botAction;
+    public ModulBasys[] modulController;
 
+    public float health = 10;
     public Team team;
-    public string aiMessage;//Сообщенние выводится на UI панеле бота о состоянии АИ
-    public Vector3 moveTargetPosition;//Координаты конечной точки пути для аи
-    public Vector3 rotateDirection;//Направление, куда нужно повернутся боту
-    public Vector3 moveDirection;//Направление, куда нужно идти боту
-    public GameObject moveTargetObj;//Текущий обьект цель движения
-    public GameObject enemyObj;//Текущий враг - цель
-    public GameObject repearPlaceObj;//Обьект место ремонта. Определяется при прохождении мимо такого обьекта
-    public NavMeshPath path;
+    public float botHeight = 3;
+    [HideInInspector]public float speedRotate;
+    [HideInInspector]public float timeRadarFound;
+    [HideInInspector]public float timeVisualFound;
+    [HideInInspector]public float alarm;
+    [HideInInspector]public Transform thisTransform;
+    [HideInInspector]public Transform pointSniper;
+    [HideInInspector]public GameObject enemyObj;
+    private Animator animator;
+    private CharacterController characterController;
+    [SerializeField] float groundCheckDistance = 0.1f;
+    private bool isGrounded;
+    public SupportBotController supportBotController;
+    private List<BotController> myBotControllerList = new List<BotController>();
+    public string debugMessage;
+    private MessageOnHeadBot messageOnHead;
+     
+    //Debug
+    int arrayIndex;
+    string startName;
+    private Vector3 spawnPosition;
 
-    public int neadRepear;//флаг, бот начал ремонтироватся
-    public int neadReload;//флаг, бот начал перезаряжатся
-    public bool startChangeModule;//флаг, бот начал перезаряжатся
-    public bool startCapture;//флаг, бот начал захват
-
-    public int alarm;//текущее время, сколько бот находится в состоянии боя.
-    public float timeRadarFound;//текущее время, сколько прошло со времени обнаружения радаром противника.
-    public float timeVisualFound;//текущее время, сколько прошло со времени обнаружения визуально противником.
-
-    //public LayerMask enemyFindlayerMask;//Маска слоев для поиска врага
-    private GameObject ui_IndicatorObj;
-    private GameObject ui_RadarIconBot;
-
-    float moveFront;
-    float moveSide;
-
-    //Текущие модули
-    public List<ModulScr> modulScr;
-    public List<GunController> gunController;
-    public BodyController bodyController;
-    public RadarController radarController;
-
-    void OnEnable()
+    void Start()
     {
-        Initialise();
+        animator = GetComponent<Animator>();
+        characterController = GetComponentInChildren<CharacterController>();
+        messageOnHead = GetComponentInChildren<MessageOnHeadBot>();
+        thisTransform = transform;
+        ChangeState(4);//Deploed
+        //Debug
+        startName = name;
+        spawnPosition = transform.position;
     }
 
-    public void Initialise()
+    void Initialise()
     {
-        speedWalk = 1.7f;
-        speedRotate = 120;
-        name = "Bot " + team;
-
-        if (navMeshAgent == null)
+        if (team == Team.Friend)
         {
-            navMeshAgent = GetComponent<NavMeshAgent>();
+            GameController.arrayBotControllerFriendTeam.Add(this);
+            myBotControllerList = GameController.arrayBotControllerFriendTeam;
         }
 
-        if (navMeshObstacle == null)
+        if (team == Team.Enemy)
         {
-            navMeshObstacle = GetComponent<NavMeshObstacle>();
+            GameController.arrayBotControllerEnemyTeam.Add(this);
+            myBotControllerList = GameController.arrayBotControllerEnemyTeam;
         }
 
-        if (checkVisibleMesh == null)
+        ChangeState();
+    }
+
+    private void CheckMessageOnHeadState()
+    {
+        if (botState == SM_BotState.PlayerControl || botState == SM_BotState.PlayerFollow)
         {
-            checkVisibleMesh = GetComponentInChildren<CheckVisibleMesh>();
+            messageOnHead.showMessageOnHead = false;
         }
-
-        if (characterController == null)
+        else
         {
-            characterController = GetComponentInChildren<CharacterController>();
-        }
-
-        if (animator == null)
-        {
-            animator = GetComponent<Animator>();
-        }
-
-        if (stateMashine == null)
-        {
-            stateMashine = transform.FindChild("Ai").GetComponent<Animator>();
-            stateMashine.gameObject.SetActive(false);
-        }
-
-        navMeshAgent.speed = speedWalk;
-        navMeshAgent.acceleration = 10;
-        navMeshAgent.angularSpeed = speedRotate;
-        health = 100;
-        ActivateModul();
-
-
-        if (team == Team.Red)
-        {
-            LevelController.arrayBotControllerRed.Add(this);
-        }
-
-        if (team == Team.Blue)
-        {
-            LevelController.arrayBotControllerBlue.Add(this);
+            messageOnHead.showMessageOnHead = true;
         }
     }
 
-    void FixedUpdate()
+    private void Update()
     {
+        CheckGroundStatus();
+        ClearAlarm();//Уменьшаем значение тревоги и обнуляем ссылку на текущего врага
+        SetBodyTarget();//Назначает точку цели для башни
+        Move();//Передвижение
+        ProcessAction();//Выполняем действия
+        CheckMessageOnHeadState();
+
+        //Debug
+        if (arrayIndex != indexBotControllerList(myBotControllerList))
+        {
+            arrayIndex = indexBotControllerList(myBotControllerList); 
+        }
+
+        if (GetComponentInChildren<MessageOnHead>() != null)
+        {
+            GetComponentInChildren<MessageOnHead>().value = health;
+        }
+
+        //End debug
+        if (botState == SM_BotState.Deploed && isGrounded == true)
+        {
+            ActivateModul();
+            Initialise();
+        }
+
+        name = startName + " " + arrayIndex;
+        debugMessage = botState.ToString();
+    }
+
+    public void ChangeState(int nextState = 0)
+    {
+        botState = (SM_BotState)nextState;
+
+        if (botState == SM_BotState.Destroy)
+        {
+            Destroy();
+        }
+    }
+
+    public void ChangeAction(int nextState = 0)
+    {
+        botAction = (SM_BotAction)nextState;
+    }
+
+    public void ActivateModul()
+    {
+        modulController = GetComponentsInChildren<ModulBasys>();
+
+        foreach (ModulBasys modul in modulController)
+        {
+            modul.startReactor(modulController);
+            modul.modulStatus = ModulStatus.On;
+        }
+
+        ReCalculate();
+    }
+
+    void Move()
+    {
+        Vector3 move = Vector3.zero;
+
         if (botState == SM_BotState.PlayerControl)
         {
-            MoveBotPlayer(PlayerController.moveDirection);
+            move = PlayerController.moveDirection;
         }
 
-        if (botState == SM_BotState.AiControl)
+        if (move != Vector3.zero)
         {
-            BotMoveAi(navMeshAgent.desiredVelocity);
+            botAction = SM_BotAction.Move;
         }
 
-        if (transform.position.y - LevelController.terrain.SampleHeight(transform.position) > 1)
+        if (move.x != 0)
         {
-            characterController.Move(Physics.gravity * Time.deltaTime);
-            animator.SetBool("Action", true);
+            Quaternion rotation = Quaternion.LookRotation(thisTransform.TransformDirection(new Vector3(move.x, 0, 0)));
+            thisTransform.rotation = Quaternion.RotateTowards(thisTransform.rotation, rotation, speedRotate * Time.deltaTime);
+
+            if (move.z == 0)
+            {
+                move.z = 1;
+            }
+        }
+
+        UpdateAnimator(move);
+    }
+
+    void UpdateAnimator(Vector3 move)
+    {
+        animator.SetFloat("Forward", move.z, 0.1f, Time.deltaTime);
+        animator.SetFloat("Side", move.x, 0.1f, Time.deltaTime);
+    }
+
+    void CheckGroundStatus()
+    {
+        RaycastHit hitInfo;
+#if UNITY_EDITOR
+        Debug.DrawLine(thisTransform.position + (Vector3.up * 0.1f), thisTransform.position + (Vector3.up * 0.1f) + (Vector3.down * groundCheckDistance), Color.red);
+#endif
+
+        if (Physics.Raycast(thisTransform.position + (Vector3.up * 0.1f), Vector3.down, out hitInfo, groundCheckDistance))
+        {
+            isGrounded = true;
         }
         else
         {
-            if (botState == SM_BotState.Deploed)
-            {
-                navMeshAgent.enabled = true;
-                stateMashine.gameObject.SetActive(true);
-                botState = SM_BotState.AiControl;
-
-                //Debug
-                if (ui_IndicatorObj == null)
-                {
-                    if (GameObject.Find("UI") != null)
-                    {
-                        EnableIndicator();
-                    }
-                }
-                //Debug end
-            }
-
-            if (animator.GetBool("Action") == true)
-            {
-                animator.SetBool("Action", false);
-            }
+            isGrounded = false;
+            characterController.Move(Physics.gravity * Time.deltaTime * 3);
         }
     }
 
-    void MoveBotPlayer(Vector3 velocity)
+    void SetBodyTarget()
     {
-        navMeshAgent.velocity = animator.deltaPosition;
-        moveFront = velocity.z;
+        Vector3 targetPoint;
 
-        if (velocity.x != 0)
+        if (botState == SM_BotState.PlayerControl)
         {
-            Quaternion rotation = Quaternion.LookRotation(transform.TransformDirection(new Vector3(velocity.x, 0, 0)));
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, speedRotate * Time.deltaTime);
+            targetPoint = PlayerController.hitForwardCollision.point;
 
-            if (velocity.z == 0)
+            if (botAction == SM_BotAction.Repear)
             {
-                moveFront = 1;
+                targetPoint = thisTransform.TransformPoint(Vector3.forward * 500);
             }
-        }
 
-        animator.SetFloat("Forward", moveFront, 0.1f, Time.deltaTime);
-        animator.SetFloat("Side", velocity.y, 0.1f, Time.deltaTime);
-
-        Vector3 startDraw = transform.position + Vector3.up;
-        Vector3 endDraw = transform.position + velocity;
-        Debug.DrawRay(startDraw, endDraw - startDraw + Vector3.up, Color.black);
-
-    }
-
-    void BotMoveAi(Vector3 velocity)
-    {
-        if (animator.applyRootMotion == true)
-        {
-            if (alarm > 8 && enemyObj != null)
+            if (botAction == SM_BotAction.ChangeModul)
             {
-                if (velocity != Vector3.zero)
-                {
-                    navMeshAgent.angularSpeed = 0;
-                    Quaternion rotation = Quaternion.LookRotation(enemyObj.transform.position - transform.position);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, speedRotate * Time.deltaTime);
-                    transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-                }
-                else
-                {
-                    navMeshAgent.angularSpeed = 0;
-                }
+                targetPoint = thisTransform.TransformPoint(Vector3.forward * 500);
             }
-            else
+
+            if (botAction == SM_BotAction.Capture)
             {
-                navMeshAgent.angularSpeed = speedRotate;
+                targetPoint = thisTransform.TransformPoint(Vector3.forward * 500);
             }
-
-            navMeshAgent.velocity = Vector3.zero;
-            moveFront = Vector3.Dot(transform.forward, velocity.normalized);
-            moveSide = Vector3.Dot(transform.right, velocity.normalized);
-           
-        }
-
-        animator.SetFloat("Forward", moveFront, 0.1f, Time.deltaTime);
-        animator.SetFloat("Side", moveSide, 0.1f, Time.deltaTime);
-        
-        Vector3 startDraw = transform.position + Vector3.up;
-        Vector3 endDraw = transform.position + velocity;
-        Debug.DrawRay(startDraw, endDraw - startDraw + Vector3.up, Color.blue);
-    }
-
-    public void AnalisHealth()
-    {
-        neadRepear = 100 - Mathf.RoundToInt(health);
-    }
-
-    public void AnalisReload()
-    {
-        /*
-        if (gunStateLeftModul != null)
-        {
-            allMaxAmmo = gunStateLeftModul.maxAmmo;
-            allCurrentAmmo = gunStateLeftModul.ammo;
-        }
-
-        if (gunStateRightModul != null)
-        {
-            allMaxAmmo += gunStateRightModul.maxAmmo;
-            allCurrentAmmo += gunStateRightModul.ammo;
-        }
-
-        neadReload = allMaxAmmo - allCurrentAmmo;
-
-        allMaxAmmo = 0;
-        allCurrentAmmo = 0;
-         */ 
-    }
-
-    public void EnableWeaponModul()
-    {
-        /*
-        if (gunStateRightModul != null && gunStateRightModul.weaponIsOn == false)
-        {
-            //Debug.Log("EnableRightWeaponModul");
-            gunStateRightModul.weaponIsOn = true;
-        }
-
-        if (gunStateLeftModul != null && gunStateLeftModul.weaponIsOn == false)
-        {
-            //Debug.Log("EnableLeftWeaponModul");
-            gunStateLeftModul.weaponIsOn = true;
-        }
-         */ 
-    }
-
-    public void StartCaptureAnimation()
-    {
-        if (captureState != null)
-        {
-            if ((captureState.transform.position - transform.position).sqrMagnitude <= navMeshAgent.stoppingDistance)
-            {
-                animator.SetBool("Capture", true);
-                ProcessCapture(0.1f);
-                bodyRotation.targetTransform = null;
-            }
-            else
-            {
-                aiMessage = "Слишком далеко";
-                animator.SetBool("Capture", false);
-            }
-        }
-    }
-
-    void ProcessCapture(float value = 0.1f)
-    {
-        if (captureState != null)
-        {
-            if (captureState.team != team)
-            {
-                bodyRotation.targetTransform = null;
-                captureState.capture += value;
-
-                if (captureState.capture >= 100)
-                {
-                    captureState.team = team;
-                    captureState.capture = 0;
-                    aiMessage = "Захвачено";
-                    animator.SetBool("Capture", false);
-                }
-            }
-            else
-            {
-                aiMessage = "Захвачено";
-                animator.SetBool("Capture", false);
-            }
-        }
-
-    }
-
-    public void StartReloadAnimation()
-    {
-        if (repearState != null)
-        {
-            if ((repearState.transform.position - transform.position).sqrMagnitude <= navMeshAgent.stoppingDistance)
-            {
-                animator.SetBool("Reload", true);
-                bodyRotation.targetTransform = null;
-            }
-            else
-            {
-                aiMessage = "Слишком далеко";
-                animator.SetBool("Reload", false);
-            }
-        }
-    }
-
-    public void StartRepearAnimation()
-    {
-        if (repearState != null)
-        {
-            if ((repearState.transform.position - transform.position).sqrMagnitude <= navMeshAgent.stoppingDistance)
-            {
-                animator.SetBool("Repear", true);
-
-                //ProcessRepear(0.1f);
-                //CheckReloadWepon(0.1f);
-
-                bodyRotation.targetTransform = null;
-                //ProcessReloadWeapon(gunReloadLeftModul, gunStateLeftModul, 0.1f);
-                //ProcessReloadWeapon(gunReloadRightModul, gunStateRightModul, 0.1f);
-            }
-            else
-            {
-                aiMessage = "Слишком далеко";
-                animator.SetBool("Repear", false);
-            }
-        }
-    }
-
-    public void ChangeState(string state = "")
-    {
-        if (state != "")
-        {
-            botState = (SM_BotState)Enum.Parse(typeof(SM_BotState), state);
-
-            if (state == "OffLine")
-            {
-                animator.SetBool("StartAction", true);
-                botState = SM_BotState.OffLine;
-            }
-
-            if (state == "PlayerControl")
-            {
-                animator.SetBool("StartAction", false);
-                botState = SM_BotState.PlayerControl;
-            }
-        }
-    }
-
-    public void DestroyBot()//Вызывается из скрипта пули при попадании по боту
-    {
-        enemyObj = null;
-        startCapture = false;
-        animator.SetBool("Repear", false);
-        animator.SetBool("Reload", false);
-        animator.SetFloat("Forward", 0);
-        animator.SetFloat("Side", 0);
-        animator.SetInteger("Dead", UnityEngine.Random.Range(1, 4));  //проигрываем анимацию смерти
-        moveTargetObj = null;
-        stateMashine.gameObject.SetActive(false);
-        moveTargetPosition = Vector3.zero;
-        botState = SM_BotState.Dead;
-        ui_IndicatorObj.SetActive(false);
-
-        if (navMeshAgent != null && navMeshAgent.isActiveAndEnabled) 
-        { 
-            navMeshAgent.ResetPath();
-            navMeshAgent.enabled = false;
-            navMeshObstacle.enabled = true;
-        }
-
-        if (captureState != null && captureState.botID == GetInstanceID()) 
-        {
-            if (startCapture == true && captureState.capture > 0)
-            { 
-                captureState.capture = 0;
-                startCapture = false;
-            }
-
-            captureState.botID = 0;
-            captureState = null;
-        }
-
-        if (repearState != null && repearState.botID == GetInstanceID())
-        {
-            repearState.botID = 0;
-            repearState = null;
-        }
-        
-        if (PlayerController.playerState == PlayerState.BotControl && PlayerController.botController == this)
-        {
-            GameObject.Find("Player").GetComponent<PlayerController>().ChangePlayerState("Follow");
-            GameObject.Find("Player").GetComponent<PlayerMouseLook>().sniperLook = false;
-        }
-
-        StartCoroutine(DisableSelf(100 * Time.deltaTime));
-    }
-
-    public void Destroy()
-    { 
-    }
-
-    void ActivateModul()
-    {
-        foreach (ModulScr modulState in GetComponentsInChildren<ModulScr>())
-        {
-            modulState.botController = this;
-            modulState.EnableModule();
-        }
-    }
-
-    void EnableIndicator()
-    {
-        if (ui_IndicatorObj == null)
-        {
-            ui_IndicatorObj = Instantiate(Resources.Load("Prefabs/User Interface/BotIndicator")) as GameObject;
-            ui_IndicatorObj.transform.SetParent(GameObject.Find("UI").transform);
-            ui_IndicatorObj.GetComponent<UI_BotIndicator>().botController = this;
         }
         else
         {
-            ui_IndicatorObj.SetActive(true);
+            targetPoint = thisTransform.TransformPoint(Vector3.forward * 500);
+        }
+
+        foreach (ModulBasys modul in modulController)
+        {
+            modul.SetLookTarget(targetPoint);
         }
     }
 
-    private IEnumerator DisableSelf(float time = 10)
+    void ClearAlarm()//Уменьшаем значение тревоги и обнуляем ссылку на текущего врага
     {
-        yield return new WaitForSeconds(time);
-
-        if (team == Team.Red)
+        if (alarm > 0)
         {
-            for (int i = 0; i < LevelController.arrayBotControllerRed.Count; i++)
+            alarm--;
+        }
+        else
+        {
+            enemyObj = null;
+        }
+    }
+
+    void ProcessAction()
+    {
+        if (supportBotController != null)
+        {
+            supportBotController.ProcessAction(this);
+        }
+        else
+        {
+            botAction = SM_BotAction.Wait;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<SupportBotController>() != null)
+        {
+            if (other.GetComponent<SupportBotController>().team == team)
             {
-                if (LevelController.arrayBotControllerRed[i] == this)
-                {
-                    LevelController.arrayBotControllerRed.RemoveAt(i);
-                }
+                supportBotController = other.GetComponent<SupportBotController>();
             }
         }
 
-        if (team == Team.Blue)
+        if (other.GetComponent<Rigidbody>() != null)
         {
-            for (int i = 0; i < LevelController.arrayBotControllerBlue.Count; i++)
-            {
-                if (LevelController.arrayBotControllerBlue[i] == this)
-                {
-                    LevelController.arrayBotControllerBlue.RemoveAt(i);
-                }
-            }
+            Debug.Log("<Rigidbody>() != null");
+            other.GetComponent<Rigidbody>().isKinematic = false;
         }
+    }
 
-        if (PlayerController.botController == this)
+    void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<SupportBotController>() != null && supportBotController == other.GetComponent<SupportBotController>())
         {
-            PlayerController.botController = null;
+            supportBotController = null;
         }
+    }
 
-        transform.position = Vector3.down * 10;
-        transform.rotation = Quaternion.Euler(Vector3.zero);
-        botState = SM_BotState.Disable;
-        name = name + team.ToString() + botState.ToString();
+    void Destroy()
+    {
+        animator.SetInteger("Dead", UnityEngine.Random.Range(1, 4));
+
+        if (PlayerController.playerState == PlayerState.ControlBot && PlayerController.botController == this)
+        {
+            PlayerController.Instance.ChangePlayerState(2);//Follow
+        }
+    }
+
+    void HideBot()
+    {
         animator.SetInteger("Dead", 0);
-        StartSpawn();
+        ClearBotList();
+        
+        if (PlayerController.playerState == PlayerState.FollowBot && PlayerController.botController == this)
+        {
+            PlayerController.Instance.ChangePlayerState(2);//Follow
+        }
+
+        ChangeState(3);//Hide
+        Spawn();
     }
 
-    void StartSpawn()
+    void ClearBotList()
     {
-        //if (GameObject.Find("DeploedShip") == null)
+        for (int i = 0; i < myBotControllerList.Count; i++)
         {
-            if (team == Team.Blue)
+            if (myBotControllerList[i] == this)
             {
-                if (GameObject.Find("BaseBlue").GetComponent<BaseState>().enableShip == false)
-                {
-                    GameObject.Find("BaseBlue").GetComponent<BaseState>().StartSpawn(this.gameObject);
-                }
-            }
-
-            if (team == Team.Red)
-            {
-                if (GameObject.Find("BaseRed").GetComponent<BaseState>().enableShip == false)
-                {
-                    GameObject.Find("BaseRed").GetComponent<BaseState>().StartSpawn(this.gameObject);
-                }
+                myBotControllerList.RemoveAt(i);
             }
         }
     }
 
+    int indexBotControllerList(List<BotController> botControllerList)
+    {
+        int index = 0;
+
+        for (int i = 0; i< botControllerList.Count; i++)
+        {
+            if (botControllerList[i] == this)
+            {
+                index = i;
+            }
+        }
+
+        return index;
+    }
+
+    //Debug
+    void Spawn()
+    {
+        transform.position = spawnPosition;
+        ChangeState(4);//Deploed
+    }
+
+    void ReCalculate()
+    {
+        //float sum = GetModulEnergySum() - (modulController[0].energyReloadQuoue);
+        //float sumToDistribut = 100 - (modulController[0].energyReloadQuoue);
+        //float mLocalHash = sumToDistribut / sum;
+
+        float sum = GetModulEnergySum();
+        //Debug.Log(GetModulEnergySum());
+        float mLocalHash = 100 / GetModulEnergySum();
+
+        foreach (ModulBasys modul in modulController)
+        {
+            {
+                modul.energyReloadQuoue *= mLocalHash;
+            }
+        }
+    }
+
+    float GetModulEnergySum()
+    {
+        float sum = 0;
+
+        for (int i = 0; i < modulController.Length; i++)
+        {
+            if (modulController[i].modulStatus == ModulStatus.On)
+            {
+                sum += modulController[i].energyReloadQuoue;
+            }
+        }
+
+        return sum;
+    }
 }

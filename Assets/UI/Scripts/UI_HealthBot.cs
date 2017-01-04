@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 
 public class UI_HealthBot : MonoBehaviour 
 {
@@ -13,8 +13,6 @@ public class UI_HealthBot : MonoBehaviour
 
     void OnEnable()
     {
-        //Debug.Log("UI_HealthBot OnEnable");
-
         if (healthSlider == null)
         {
             healthSlider = GetComponent<Slider>();

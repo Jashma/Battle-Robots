@@ -14,6 +14,26 @@ public class UI_AudioManager : MonoBehaviour {
     void Start()
     {
         instance = this;
+
+        if (mixer == null)
+        {
+            mixer = Resources.Load("Prefabs/User Interface/Audio/Mixer") as AudioMixer;
+        }
+
+        if (hoverSound == null)
+        {
+            hoverSound = Resources.Load("Prefabs/User Interface/Audio/Hover") as AudioClip;
+        }
+
+        if (sliderSound == null)
+        {
+            sliderSound = Resources.Load("Prefabs/User Interface/Audio/Slider") as AudioClip;
+        }
+
+        if (clickSound == null)
+        {
+            clickSound = Resources.Load("Prefabs/User Interface/Audio/Click") as AudioClip;
+        }
     }
 
     public void PlayClickSound()

@@ -5,66 +5,34 @@ using System.Collections.Generic;
 
 public class UI_BotIndicator : MonoBehaviour  
 {
-    public BotController botController;
+    public bool showHealthIndicator;
+    public bool showMarkerIndicator;
+    public bool showMessageIndicator;
     private GameObject healthObj;
     private GameObject markerObj;
-
+    private GameObject messageObj;
 
     void OnEnable()
     {
         healthObj = transform.FindChild("HealthImage").gameObject;
         markerObj = transform.FindChild("MarkImage").gameObject;
-
-        healthObj.SetActive(false);
-        markerObj.SetActive(false);
+        messageObj = transform.FindChild("Message").gameObject;
     }
 
     void LateUpdate()
     {
-        if (botController != null)
+        if (transform.parent == null)
         {
-            if (botController.checkVisibleMesh.camVisible == true)
+            if (GameObject.Find("SceneObject") != null)
             {
-                if (PlayerController.botController != botController)
-                {
-                    //Рисуем Полоску ХП
-                    if (botController.team == PlayerController.playerTeam)
-                    {
-                        if (healthObj.activeSelf == false) { healthObj.SetActive(true); }
-                    }
-                    else
-                    {
-                        if (botController.timeVisualFound >= Time.time)
-                        {
-                            if (healthObj.activeSelf == false) { healthObj.SetActive(true); }
-                        }
-                        else
-                        {
-                            if (healthObj.activeSelf == true) { healthObj.SetActive(false); }
-                        }
-                    }
-
-                    //Рисуем Маркер
-                    if (botController.team != PlayerController.playerTeam && botController.timeRadarFound >= Time.time)
-                    {
-                        if (markerObj.activeSelf == false) { markerObj.SetActive(true); }
-                    }
-                    else
-                    {
-                        if (markerObj.activeSelf == true) { markerObj.SetActive(false); }
-                    }
-                }
-                else
-                {
-                    if (healthObj.activeSelf == true) { healthObj.SetActive(false); }
-                    if (markerObj.activeSelf == true) { markerObj.SetActive(false); }
-                }
+                transform.SetParent(GameObject.Find("SceneObject").transform);
             }
-            else
-            {
-                if (healthObj.activeSelf == true) { healthObj.SetActive(false); }
-                if (markerObj.activeSelf == true) { markerObj.SetActive(false); }
-            }
+        }
+        else
+        {
+            if (healthObj.activeSelf != showHealthIndicator) { healthObj.SetActive(showHealthIndicator); }
+            if (markerObj.activeSelf != showMarkerIndicator) { markerObj.SetActive(showMarkerIndicator); }
+            if (messageObj.activeSelf != showMessageIndicator) { messageObj.SetActive(showMessageIndicator); }
         }
     }
 }

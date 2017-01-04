@@ -7,11 +7,13 @@ public class UI_ChangeTeam : MonoBehaviour
 
 	public void ChangeTeamRed () 
     {
-        GameObject.Find("Player").GetComponent<PlayerController>().PlayerStart("Red");
-	}
+        PlayerController.Instance.PlayerStart();
+        UI_Controller.Instance.ChangeState(3);//"InGame"
+    }
 
     public void ChangeTeamBlue()
     {
-        GameObject.Find("Player").GetComponent<PlayerController>().PlayerStart("Blue");
+        PlayerController.Instance.PlayerStart();
+        UI_Controller.Instance.ChangeState(3);//"InGame"
     }
 }

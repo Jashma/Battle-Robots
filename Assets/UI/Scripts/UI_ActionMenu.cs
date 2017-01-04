@@ -5,91 +5,138 @@ using System.Collections;
 
 public class UI_ActionMenu : MonoBehaviour 
 {
-    public GameObject ActionPrefab;
-    public Vector3 createPosition;
     public Button getControllButton;
-    public Button getFollowButton;
     public Button getSpectatorButton;
     public Button getDeploedButton;
-    private GameObject actionObj;
+    public Button getActionButton;
 
-    private void OnEnable()
+    void OnEnable()
     {
-        //Create Action Obj
-        ActionPrefab = Resources.Load("Prefabs/CreatePlace") as GameObject;
-
-        if (GameObject.Find("CreatePlace") != null)
-        {
-            Destroy(GameObject.Find("CreatePlace"));
-        }
+        FindButton();
 
         //Add listen Controll Bot
-        getControllButton.onClick.RemoveAllListeners();
-
-        if (GameObject.Find("Player") != null && PlayerController.playerState == PlayerState.Follow)
-        {
-            getControllButton.GetComponentInChildren<Text>().text = "Controll";
-            getControllButton.onClick.AddListener(delegate { GameObject.Find("Player").GetComponent<PlayerController>().ChangePlayerState("BotControl"); });
-        }
-        else
-        {
-            getControllButton.GetComponentInChildren<Text>().text = "None";
-        }
-
-        //Add listen Follow Bot
-        getFollowButton.onClick.RemoveAllListeners();
-
-        if (GameObject.Find("Player") != null && PlayerController.arrayBotController.Count > 0)
-        {
-            getFollowButton.GetComponentInChildren<Text>().text = "Follow";
-            getFollowButton.onClick.AddListener(delegate { GameObject.Find("Player").GetComponent<PlayerController>().ChangePlayerState("Follow"); });
-        }
-        else
-        {
-            getFollowButton.GetComponentInChildren<Text>().text = "None";
-        }
+        AddListenerControllButton();
 
         //Add listen Spectator
-        getSpectatorButton.onClick.RemoveAllListeners();
-
-        if (GameObject.Find("Player") != null)
-        {
-            getSpectatorButton.GetComponentInChildren<Text>().text = "Spectator";
-            getSpectatorButton.onClick.AddListener(delegate { GameObject.Find("Player").GetComponent<PlayerController>().ChangePlayerState("Spectator"); });
-        }
-        else
-        {
-            getSpectatorButton.GetComponentInChildren<Text>().text = "None";
-        }
+        AddSpectatorButton();
 
         //Add listen Deploed
-        getDeploedButton.onClick.RemoveAllListeners();
+        AddDeploedButton();
 
-        if (GameObject.Find("Player") != null)
+        //Add listen Action Bot
+        AddActionButton();
+        
+    }
+
+    void FindButton()
+    {
+        if (getControllButton == null)
         {
-            getDeploedButton.onClick.AddListener(delegate { GameObject.Find("Player").GetComponent<PlayerController>().ChangePlayerState("Deploed"); });
-            getDeploedButton.onClick.AddListener(delegate { GetComponentInParent<UI_Controller>().ChangeState("DeploedMenu"); });
+            getControllButton = transform.FindChild("ControlButton").GetComponent<Button>();
+        }
+
+        if (getSpectatorButton == null)
+        {
+            getSpectatorButton = transform.FindChild("SpectatorButton").GetComponent<Button>();
+        }
+
+        if (getDeploedButton == null)
+        {
+            getDeploedButton = transform.FindChild("DeploedButton").GetComponent<Button>();
+        }
+
+        if (getActionButton == null)
+        {
+            getActionButton = transform.FindChild("ActionButton").GetComponent<Button>();
+        }
+    }
+
+    void AddListenerControllButton()//Add listen Controll Bot
+    {
+        getControllButton.onClick.RemoveAllListeners();
+
+        if (PlayerController.playerState == PlayerState.FollowBot)
+        {
+            getControllButton.GetComponentInChildren<Text>().text = "Controll";
+            getControllButton.onClick.AddListener(delegate { UI_Controller.Instance.ChangeActionMenuState(0); });
+            getControllButton.onClick.AddListener(delegate { PlayerController.Instance.ChangePlayerState(3); });//"BotControl"
         }
         else
         {
-            getSpectatorButton.GetComponentInChildren<Text>().text = "None";
-        }
-    }
-
-    public void CreateActionObj()
-    {
-        if (actionObj != null)
-        {
-            if (actionObj.GetComponent<ActionObj>().inAction == true)
+            if (PlayerController.arrayBotController.Count > 0)
             {
-                Destroy(actionObj);
+                getControllButton.GetComponentInChildren<Text>().text = "Follow";
+                getControllButton.onClick.AddListener(delegate { UI_Controller.Instance.ChangeActionMenuState(0); });
+                getControllButton.onClick.AddListener(delegate { PlayerController.Instance.ChangePlayerState(2); });//"Follow"
+               
             }
-            
-            actionObj = null;
+            else
+            {
+                getControllButton.GetComponentInChildren<Text>().text = "None";
+            }
         }
 
-        float terrainY = Terrain.activeTerrain.SampleHeight(PlayerController.hitForwardCollision.point);
-        createPosition = new Vector3(PlayerController.hitForwardCollision.point.x,terrainY + 0.5f,10);
-        actionObj = Instantiate(Resources.Load("Prefabs/CreatePlace"), createPosition, Quaternion.identity) as GameObject;
     }
+
+    void AddSpectatorButton()//Add listen Spectator
+    {
+        getSpectatorButton.onClick.RemoveAllListeners();
+        getSpectatorButton.GetComponentInChildren<Text>().text = "Spectator";
+        getControllButton.onClick.AddListener(delegate { UI_Controller.Instance.ChangeActionMenuState(0); });
+        getSpectatorButton.onClick.AddListener(delegate { PlayerController.Instance.ChangePlayerState(1); });//"Spectator"
+        //
+
+    }
+
+    void AddDeploedButton()//Add listen Deploed
+    {
+        getDeploedButton.onClick.RemoveAllListeners();
+
+        if (PlayerController.playerBase != null)
+        {
+            getDeploedButton.GetComponentInChildren<Text>().text = "Deploed";
+            getControllButton.onClick.AddListener(delegate { UI_Controller.Instance.ChangeActionMenuState(0); });
+            getDeploedButton.onClick.AddListener(delegate { PlayerController.Instance.ChangePlayerState(4); });//"Deploed"
+            getDeploedButton.onClick.AddListener(delegate { UI_Controller.Instance.ChangeState(13); });//"DeploedMenu"
+            //
+        }
+        else
+        {
+            getDeploedButton.GetComponentInChildren<Text>().text = "None";
+        }
+    }
+
+    void AddActionButton()//Add listen Action Bot
+    {
+        getActionButton.onClick.RemoveAllListeners();
+        getActionButton.GetComponentInChildren<Text>().text = "None";
+
+        if (PlayerController.playerState == PlayerState.ControlBot)
+        {
+            if (PlayerController.botController.supportBotController != null)
+            {
+                //RepearButton
+                if (PlayerController.botController.supportBotController.action == SM_BotAction.Repear)
+                {
+                    getActionButton.GetComponentInChildren<Text>().text = "Repear";
+                    getControllButton.onClick.AddListener(delegate { UI_Controller.Instance.ChangeActionMenuState(0); });
+                    getActionButton.onClick.AddListener(delegate { PlayerController.botController.ChangeAction(1); });//"Repear"
+                    //
+                }
+
+                //ChangeModul
+                if (PlayerController.botController.supportBotController.action == SM_BotAction.ChangeModul)
+                {
+                    getActionButton.GetComponentInChildren<Text>().text = "ChangeModul";
+                    getControllButton.onClick.AddListener(delegate { UI_Controller.Instance.ChangeActionMenuState(0); });
+                    getActionButton.onClick.AddListener(delegate { PlayerController.botController.ChangeAction(3); });//"ChangeModul"
+                    getActionButton.onClick.AddListener(delegate { PlayerController.Instance.ChangePlayerState(5); });//"ChangeModul"
+                    getActionButton.onClick.AddListener(delegate { UI_Controller.Instance.ChangeState(17); });//"ChangeModulMenu"
+                    //
+
+                }
+            }
+        }
+    }
+
 }

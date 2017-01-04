@@ -11,7 +11,7 @@ public enum UI_State
     ConfigClient,
     ConfigServer,
     InGame,
-    ConfigMenu,
+    PreferenceMenu,
     ConfigAudioMenu,
     ConfigAimMenu,
     ConfigGraphicMenu,
@@ -19,156 +19,201 @@ public enum UI_State
     Exit,
     WaitConnect,
     PauseMenu,
-    ActionMenu,
     Quit,
     DeploedMenu,
     ChangeTeam,
     ChangeLevel,
+    GameConfig,
+    ChangeModulMenu,
+}
+
+public enum UI_InGameMenu
+{
+    None,
+    ActionMenu,
+    ChangeReloadEnergyQuoue,
+    BigModulInterface,
+    Disable,
 }
 
 public class UI_Controller : MonoBehaviour 
 {
-    public static UI_Controller instance;
-    
-    public Transform[] uiMenuTransform;
     public static Transform currentMenuTransform;
+    public static Color enableColor = Color.white;
+    public static Color disableColor = Color.gray;
+    public Transform sceneObjTransform;
+    public Transform[] uiMenuTransform;
     [HideInInspector]
     public Button currentButton;
     //[HideInInspector]
     public GameObject currentMouseOverGameObject;
+    public Color elementMenuColor;
+    private bool useAxisEsc = false;
+    private bool useAxisAction = false;
 
-    private bool isAxisInUse = false;
     public static UI_State uiState;
+    public static UI_InGameMenu uiInGameMenu;
     public static float speedMoveMenu = 25;
     public static float speedScaleMenu = 0.01f;
-
-    public static UI_Controller Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = (UI_Controller)FindObjectOfType(typeof(UI_Controller));
-            }
-            return instance;
-        }
-    }
-
+    //public static bool actionMenu;
     //Debug
-    public  UI_State currentUiState;
+    public UI_State currentUiState;
+    public UI_InGameMenu currentUiInGameMenu;
     public Transform currentMenu;
+    public static UI_Controller Instance { get; private set; }
+
 
     void Awake()
     {
-        if (Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            DontDestroyOnLoad(gameObject);
-        }
-
         name = "UI";
+        DontDestroyOnLoad(gameObject);
+        Instance = this;
+        DisableAllMenu();//DisableAllMenu
+        ChangeState(8);//MainMenu
     }
 
-	void Start() 
+    void DisableAllMenu()
     {
         for (int i = 0; i < uiMenuTransform.Length; i++)
         {
-            if (uiMenuTransform[i] != null)
             {
                 uiMenuTransform[i].gameObject.SetActive(false);
             }
         }
+    }
 
-        ChangeState("MainMenu");
-	}
-
-    public void ChangeState(string state = "")
+    public void ChangeState(int nextState)
     {
-        if (state != "")
+        uiState = (UI_State)nextState;
+
+        for (int i = 0; i < uiMenuTransform.Length; i++)
         {
-            uiState = (UI_State)Enum.Parse(typeof(UI_State), state);
-
-            if (currentMenuTransform != null)
+            if (uiMenuTransform[i].name == uiState.ToString())
             {
-                currentMenuTransform.gameObject.SetActive(false);
+                currentMenuTransform = uiMenuTransform[i];
+                currentMenuTransform.gameObject.SetActive(true);
             }
-
-            for (int i = 0; i < uiMenuTransform.Length; i++)
+            else
             {
-                if (uiMenuTransform[i].name == uiState.ToString())
-                {
-                    currentMenuTransform = uiMenuTransform[i];
-                    currentMenuTransform.gameObject.SetActive(true);
-                }
+                uiMenuTransform[i].gameObject.SetActive(false);
             }
         }
-
-
+        
         if (UI_Controller.uiState == UI_State.Quit)
         {
             QuitApplication();
         }
 
-        if (UI_Controller.uiState == UI_State.InGame)
+        currentMenu = currentMenuTransform;
+    }
+
+    public void ChangeActionMenuState(int nextState)
+    {
+        uiInGameMenu = (UI_InGameMenu)nextState;
+    }
+
+    public void ShowCursor(bool show)
+    {
+        Cursor.visible = show;
+
+        if (show == true)
         {
-            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
             Cursor.lockState = CursorLockMode.Locked;
         }
-
-        currentUiState = uiState;
-        currentMenu = currentMenuTransform;
     }
 
     void Update()
     {
-        if (Input.GetAxis("Cancel") != 0)
+        UseAxisEsc();
+        UseAxisAction();
+
+        //Debug
+        currentUiInGameMenu = uiInGameMenu;
+        currentUiState = uiState;
+    }
+
+    void UseAxisEsc()
+    {
+        if (Input.GetAxis("Cancel") > 0)
         {
-            if (isAxisInUse == false)
+            if (useAxisEsc == false)
             {
+                useAxisEsc = true;
+
                 if (uiState == UI_State.InGame)
                 {
-                    ChangeState("MainMenu");
+                    ChangeState(8);//"MainMenu"
+                    return;
+                }
+
+                if (uiState == UI_State.MainMenu)
+                {
+                    ChangeState(3);//"MainMenu"
+                    return;
                 }
 
                 if (uiState == UI_State.WaitConnect)
                 {
-                    ChangeState("ConnectionMenu");
+                    ChangeState(0);//"ConnectionMenu"
+                    return;
                 }
             }
-
-            isAxisInUse = true;
-            StartCoroutine(DisableAxis(50));
-        }
-
-        if (Input.GetAxis("Action") != 0)
-        {
-            if (isAxisInUse == false)
-            {
-                if (uiState == UI_State.InGame)
-                {
-                    ChangeState("ActionMenu");
-                }
-            }
-
-            isAxisInUse = true;
-            StartCoroutine(DisableAxis(50));
         }
         else
         {
-            if (uiState == UI_State.ActionMenu)
-            {
-                ChangeState("InGame");
-            }
+            useAxisEsc = false;
         }
     }
 
-    private IEnumerator DisableAxis(float time)
+    void UseAxisAction()
     {
-        yield return new WaitForSeconds(time * Time.deltaTime);
-        isAxisInUse = false;
+        if (Input.GetAxis("Action") != 0)
+        {
+            if (useAxisAction == false)
+            {
+                useAxisAction = true;
+
+                if (uiState == UI_State.InGame)
+                {
+                    if (uiInGameMenu == UI_InGameMenu.None)
+                    {
+                        ChangeActionMenuState(1);//ActionMenu
+                    }
+                }
+            }
+            else
+            {
+                useAxisAction = false;
+            }
+        }
+        else
+        {
+            //if (uiInGameMenu == UI_InGameMenu.ActionMenu)
+            {
+                //ChangeActionMenuState(0);//None
+            }
+
+            ChangeActionMenuState(0);//None
+        }
+    }
+
+    public Transform GetTransform(string nameMenu = "")
+    {
+        Transform returnTransform = null;
+
+        foreach (Transform transform in uiMenuTransform)
+        {
+            if (transform.name == nameMenu)
+            {
+                returnTransform = transform;
+            }
+        }
+
+        return returnTransform;
     }
 
     private void QuitApplication()

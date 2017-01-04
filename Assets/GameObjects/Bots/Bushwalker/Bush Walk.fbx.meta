@@ -217,7 +217,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
@@ -248,7 +248,7 @@ ModelImporter:
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
+      keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
@@ -259,49 +259,49 @@ ModelImporter:
       - path: 
         weight: 1
       - path: AMMO_BOX
-        weight: 0
+        weight: 1
       - path: AMMO_TAPE
-        weight: 0
+        weight: 1
       - path: ARMOR_BACK
-        weight: 0
+        weight: 1
       - path: ARMOR_BACK_FINGER_LEFT
-        weight: 0
+        weight: 1
       - path: ARMOR_BACK_FINGER_RIGHT
-        weight: 0
+        weight: 1
       - path: ARMOR_FEET_LEFT
-        weight: 0
+        weight: 1
       - path: ARMOR_FEET_RIGHT
-        weight: 0
+        weight: 1
       - path: ARMOR_FRONT_FINGER_LEFT_1
-        weight: 0
+        weight: 1
       - path: ARMOR_FRONT_FINGER_LEFT_2
-        weight: 0
+        weight: 1
       - path: ARMOR_FRONT_FINGER_RIGHT_1
-        weight: 0
+        weight: 1
       - path: ARMOR_FRONT_FINGER_RIGHT_2
-        weight: 0
+        weight: 1
       - path: ARMOR_HIP_LEFT
-        weight: 0
+        weight: 1
       - path: ARMOR_HIP_RIGHT
-        weight: 0
+        weight: 1
       - path: ARMOR_KNEE_LEFT
-        weight: 0
+        weight: 1
       - path: ARMOR_KNEE_RIGHT
-        weight: 0
+        weight: 1
       - path: ARMOR_TOWER_LEFT
-        weight: 0
+        weight: 1
       - path: ARMOR_TOWER_RIGHT
-        weight: 0
+        weight: 1
       - path: CANISTER1
-        weight: 0
+        weight: 1
       - path: FLARES
-        weight: 0
+        weight: 1
       - path: GUN_HULL
-        weight: 0
+        weight: 1
       - path: GUN_MUZZLE
-        weight: 0
+        weight: 1
       - path: main_tower
-        weight: 0
+        weight: 1
       - path: PELVIS_SKIN
         weight: 1
       - path: root_bone
@@ -378,12 +378,12 @@ ModelImporter:
           1
         weight: 1
       - path: TORSO_ARMOR_LEFT
-        weight: 0
+        weight: 1
       - path: TORSO_ARMOR_RIGHT
-        weight: 0
+        weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 1
     - serializedVersion: 16
       name: Bush WalkForward
       takeName: Take 001
@@ -401,7 +401,7 @@ ModelImporter:
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
+      keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
@@ -554,7 +554,7 @@ ModelImporter:
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
+      keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
@@ -707,7 +707,7 @@ ModelImporter:
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
+      keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
@@ -860,7 +860,7 @@ ModelImporter:
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
+      keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
@@ -1000,7 +1000,7 @@ ModelImporter:
       name: Bush Idle
       takeName: Take 001
       firstFrame: 1
-      lastFrame: 2
+      lastFrame: 4
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -1013,7 +1013,7 @@ ModelImporter:
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
+      keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
@@ -1168,7 +1168,7 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 78
     normalImportMode: 0
     tangentImportMode: 3
   importAnimation: 1

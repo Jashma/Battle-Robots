@@ -8,15 +8,15 @@ public class UI_TeamPanelController : MonoBehaviour
     public GameObject[] unitButtonObj;//Массив панелей имен ботов 
     public Text[] unitButtonText;//Массив Текста в панеле имен ботов
     public Image[] unitButtonImage;//Массив image в панеле имен ботов
-    public Vector3 createPosition;//Позиция где создается панель бота
-    public float otstup;//Отступ между панелями ботов
-    public Color enableColor;
-    public Color disableColor;
+    public Vector3 createBotPosition = new Vector3(80, -40, 0);//Позиция где создается панель бота
+    public float otstup = 30;//Отступ между панелями ботов
+    public Team team;
 
+    //private float panelWidth;
     private GameObject unitPrefabObj;//
     private RectTransform rectTransform;
     private Text nameMenuText;
-    
+    private List<BotController> botList;
 
     void OnEnable()
     {
@@ -39,68 +39,48 @@ public class UI_TeamPanelController : MonoBehaviour
         {
             nameMenuText = transform.FindChild("NameTeamText").GetComponent<Text>();
         }
+
+        if (team == Team.Friend)
+        {
+            botList = GameController.arrayBotControllerFriendTeam;
+            nameMenuText.text = PlayerController.playerTeam.ToString();
+        }
+
+        if (team == Team.Enemy)
+        {
+            botList = GameController.arrayBotControllerEnemyTeam;
+            nameMenuText.text = PlayerController.enemyTeam.ToString();
+        }
     }
 
     void Update()
     {
-        if (name == "TeamFriendPanel")
-        {
-            if (nameMenuText.text != PlayerController.playerTeam.ToString())
-            {
-                nameMenuText.text = PlayerController.playerTeam.ToString();
-            }
-
-            if (PlayerController.playerTeam == Team.Red)
-            {
-                DrawButtonText(LevelController.arrayBotControllerRed, true);
-            }
-
-            if (PlayerController.playerTeam == Team.Blue)
-            {
-                DrawButtonText(LevelController.arrayBotControllerBlue, true);
-            }
-        }
-
-        if (name == "TeamEnemyPanel")
-        {
-            if (nameMenuText.text != PlayerController.enemyTeam.ToString())
-            {
-                nameMenuText.text = PlayerController.enemyTeam.ToString();
-            }
-
-            if (PlayerController.playerTeam == Team.Red)
-            {
-                DrawButtonText(LevelController.arrayBotControllerBlue);
-            }
-
-            if (PlayerController.playerTeam == Team.Blue)
-            {
-                DrawButtonText(LevelController.arrayBotControllerRed);
-            }
-        }
+        DrawButtonText(botList);
     }
 
     void CreatePrefabPanel()
     {
-        unitButtonObj = new GameObject[LevelController.maxBot];//Размер массива равен максимальному кличеству ботов одной команды
-        unitButtonText = new Text[LevelController.maxBot];
-        unitButtonImage = new Image[LevelController.maxBot];
+        unitButtonObj = new GameObject[GameController.maxBot];//Размер массива равен максимальному кличеству ботов одной команды
+        unitButtonText = new Text[GameController.maxBot];
+        unitButtonImage = new Image[GameController.maxBot];
 
         //Проходим по массиву обьектов и создаем панельки ботов, делаем их дочерними к этому обьекту
         for (int i = 0; i < unitButtonObj.Length; i++)
         {
             unitButtonObj[i] = Instantiate(unitPrefabObj) as GameObject;
             unitButtonObj[i].transform.SetParent(transform);
-            unitButtonObj[i].transform.localPosition = createPosition;
-            createPosition = unitButtonObj[i].transform.localPosition + Vector3.down*otstup;
+            unitButtonObj[i].transform.localPosition = createBotPosition;
+            createBotPosition = unitButtonObj[i].transform.localPosition + Vector3.down*otstup;
             unitButtonObj[i].SetActive(false);
 
             unitButtonText[i] = unitButtonObj[i].GetComponentInChildren<Text>();
             unitButtonImage[i] = unitButtonObj[i].GetComponent<Image>();
         }
+
+        GetComponent<RectTransform>().sizeDelta = new Vector2(GetComponent<RectTransform>().sizeDelta.x, otstup + otstup * unitButtonObj.Length);
     }
 
-    void DrawButtonText(List<BotController> arrayBotController, bool check = false)
+    void DrawButtonText(List<BotController> arrayBotController)
     {
         for (int i = 0; i < unitButtonObj.Length; i++)//Проходим по массиву обьектов
         {
@@ -115,29 +95,33 @@ public class UI_TeamPanelController : MonoBehaviour
 
                     unitButtonText[i].text = arrayBotController[i].name + "  " + i;//Назначаем имя
 
-                    if (arrayBotController[i].botState == SM_BotState.Dead)//Если мертвый бот
-                    { 
-                        unitButtonText[i].color = disableColor;//Назначаем цвет имени бота "Выключен"
+                    if (arrayBotController[i].botState == SM_BotState.Destroy)//Если мертвый бот
+                    {
+                        unitButtonText[i].color = UI_Controller.disableColor;//Назначаем цвет имени бота "Выключен"
                     }
                     else
                     {
-                        unitButtonText[i].color = enableColor;//Назначаем цвет имени бота "Включен"
+                        unitButtonText[i].color = UI_Controller.enableColor;//Назначаем цвет имени бота "Включен"
                     }
 
                     //Здесь рисуем рамочку вокруг того бота, который управляется игроком
                     //Если эта панел команды игрока, то check будет true
-                    if (check == true)
+                    if (PlayerController.botController != null)
                     {
-                        if (PlayerController.botController != null)
+                        if (PlayerController.botController == arrayBotController[i])
                         {
-                            if (PlayerController.botController == arrayBotController[i])
-                            {
-                                unitButtonImage[i].enabled = true;
-                            }
-                            else
-                            {
-                                unitButtonImage[i].enabled = false;
-                            }
+                            unitButtonImage[i].enabled = true;
+                        }
+                        else
+                        {
+                            unitButtonImage[i].enabled = false;
+                        }
+                    }
+                    else
+                    {
+                        if (unitButtonImage[i].enabled == true)
+                        {
+                            unitButtonImage[i].enabled = false;
                         }
                     }
                 }

@@ -4,14 +4,17 @@ using UnityEngine.UI;
 
 public class UI_BotAimController : MonoBehaviour 
 {
-    public ModulPosition gunPosition;//Позиция оружия относительно робота
+    public ModulType modulType;//Позиция оружия относительно робота
     public Vector3 screenPosition;//Текущая позиция на экране
-    //public GameObject gunCrosshairImage;
     public Image gunCrosshairImage;
     private Transform playerTransform;
     private Camera cameraComponent;
     private RectTransform rectTransform;
     private float aimWidth = 20;
+    private Text aimTargetText;
+    private Vector2 oldAimPosition;
+    private Vector2 nextAimPosition;
+    private ModulBasys modulGun;
 
     void OnEnable()
     {
@@ -19,76 +22,80 @@ public class UI_BotAimController : MonoBehaviour
         cameraComponent = GameObject.Find("Player").GetComponentInChildren<Camera>();
         gunCrosshairImage = GetComponent<Image>();
         rectTransform = GetComponent<RectTransform>();
-        //rectTransform = gunCrosshairImage.GetComponent<RectTransform>();
+        aimTargetText = GetComponentInChildren<Text>();
     }
 
     void LateUpdate()
     {
-        //Если игрок в состоянии сделования или управления ботом
-        if (PlayerController.botController != null)
+        if (modulGun == null)
         {
-            //Если Угол между взглядом игрока вперед и взглядом башни вперед меньше 60 (нужно, что бы не рисовать прицел, когда камера смотрит в другую сторону от направления оружия)
-            if (Vector3.Angle(playerTransform.TransformDirection(Vector3.forward), PlayerController.botController.bodyRotation.transform.TransformDirection(Vector3.forward)) < 60)
-            {
-                for (int i = 0; i < PlayerController.botController.gunController.Count; i++)
-                {
-                    if (gunPosition == PlayerController.botController.gunController[i].gunPisition)
-                    {
-                        if (PlayerController.botController.gunController[i] != null && PlayerController.botController.gunController[i].weaponIsOn == true)
-                        {
-                            DrawGunCrosshair(PlayerController.botController.gunController[i].currentGunTarget);
-                        }
-                        else
-                        {
-                            imageDisable();
-                        }
-                    }
-                }
-            }
-            else
-            {
-                imageDisable();
-            }
+            gunCrosshairImage.enabled = false;
+            modulGun = FindModul();
         }
         else
         {
-            imageDisable();
+            DrawGunCrosshair(modulGun.GetGunTarget());
+            ShowAimTargetText();
+
+            Debug.DrawLine(modulGun.thisTransform.position, modulGun.thisTransform.TransformPoint(Vector3.forward * 100));
         }
     }
 
-    /*
-    void ChangeGun(GunController gunController)
+    private ModulBasys FindModul()
     {
-        if (gunController != null && gunController.weaponIsOn == true)
+        foreach (ModulBasys modul in PlayerController.botController.modulController)
         {
-            DrawGunCrosshair(gunController.currentGunTarget);
+            if (modulType == modul.modulType)
+            {
+                return modul;
+            }
         }
-        else
-        {
-            imageDisable();
-        }
+
+        return null;
     }
-    */
 
     void DrawGunCrosshair(Vector3 gunTarget)
     {
-        if (gunCrosshairImage.enabled == true)
+        if (CheckWeaponAngle() == true)
         {
-            screenPosition = cameraComponent.WorldToScreenPoint(gunTarget);
-            rectTransform.anchoredPosition = screenPosition;
+            gunCrosshairImage.enabled = true;
+            AimLerp(gunTarget);
         }
         else
         {
-            gunCrosshairImage.enabled = true;
+            gunCrosshairImage.enabled = false;
         }
     }
 
-    void imageDisable()
+    bool CheckWeaponAngle()
     {
-        if (gunCrosshairImage.enabled == true)
+        if (Vector3.Angle(PlayerController.playerTransform.TransformPoint(Vector3.forward * 100), modulGun.thisTransform.TransformPoint(Vector3.forward * 100)) > 35)
         {
-            gunCrosshairImage.enabled = false; 
+            return false;
         }
+
+        return true;
+    }
+
+    void ShowAimTargetText()
+    {
+        if (gunCrosshairImage.enabled == true && GameController.showAimInformation == true)
+        {
+            aimTargetText.enabled = true;
+            aimTargetText.text = modulGun.GetSupportMessage();
+        }
+        else
+        {
+            aimTargetText.enabled = false;
+        }
+    }
+
+    void AimLerp(Vector3 gunTarget)
+    {
+        oldAimPosition = screenPosition;
+        nextAimPosition = cameraComponent.WorldToScreenPoint(gunTarget);
+        screenPosition = new Vector2(Mathf.Lerp(oldAimPosition.x, nextAimPosition.x, GameController.aimLerp), Mathf.Lerp(oldAimPosition.y, nextAimPosition.y, GameController.aimLerp));
+        rectTransform.position = screenPosition;
     }
 
 }

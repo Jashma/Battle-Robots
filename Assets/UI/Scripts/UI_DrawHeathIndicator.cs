@@ -4,59 +4,73 @@ using UnityEngine.UI;
 
 public class UI_DrawHeathIndicator : MonoBehaviour 
 {
-    public Color redColor;
-    public Color blueColor;
-    public Sprite helthSpriteRed;
-    public Sprite helthSpriteBlue;
-    public Image helthImage;
-    private PlayerController playerController;
-    private BotController botController;
-    private Camera cameraComponent;
-    private float imageWidthHealth;
-    private float imageHeightHealth;
+    public Sprite spriteEnemy;//Сприйт вражеской команды
+    public Sprite spriteFriend;//Спрайт дружественной команды
+    public Team team;
+    public Transform botTransform;
+    public float height;//Высота от координат бота
+    public float health;
+    private float imageSizeMax = 200;//Ширина спрайта
+    private float imageSizeMin = 40;//Высота спрайта
+    private float imageWidthCurrent;//Ширина спрайта
+    private float imageHeightCurrent;//Высота спрайта
     private RectTransform healthImageTransform;
-    private float height;
-    private Vector3 tmpPosition;
-    private Vector3 screenPosition;
+    
+    private Vector3 position;
+    private Vector2 screenPositionBot;
+    private Vector2 screenPositionBotHeight;
     private Slider slider;
+
+    //Debug
+    public Vector3 pos1;
+    public Vector3 pos2;
+    public Vector2 screenPos1;
+    public Vector2 screenPos2;
 
     void OnEnable()
     {
-        cameraComponent = GameObject.Find("Player").GetComponentInChildren<Camera>();
-        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
-        botController = GetComponentInParent<UI_BotIndicator>().botController;
         healthImageTransform = GetComponent<RectTransform>();
         slider = GetComponentInChildren<Slider>();
 
-        if (botController.team == Team.Red)
+        if (team == Team.Enemy)
         {
-            //helthImage.color = redColor;
-            helthImage.sprite= helthSpriteRed;
+            GetComponent<Image>().sprite = spriteEnemy;
         }
 
-        if (botController.team == Team.Blue)
+        if (team == Team.Friend)
         {
-            //helthImage.color = blueColor;
-            helthImage.sprite = helthSpriteBlue;
+            GetComponent<Image>().sprite = spriteFriend;
         }
     }
 
-    void LateUpdate()
+    void LateUpdate() 
     {
+        //Debug
+        height = botTransform.GetComponent<CharacterController>().height;
+        //EndDebug
         DrawHelth();
+    }
+
+    void GetHelthIndicatorWidth()
+    {
+        imageWidthCurrent = screenPositionBotHeight.y - screenPositionBot.y;
+
+        imageWidthCurrent = Mathf.Clamp(imageWidthCurrent, imageSizeMin, imageSizeMax);
+
+        imageHeightCurrent = 10;// imageWidthCurrent * 0.1f;
+
+        healthImageTransform.sizeDelta = new Vector2(imageWidthCurrent, imageHeightCurrent);
     }
 
     void DrawHelth()
     {
-        imageWidthHealth = 100 - Vector3.Distance(playerController.transform.position, botController.transform.position) * 1f;
-        imageHeightHealth = 10 - Vector3.Distance(playerController.transform.position, botController.transform.position) * 0.1f;
-        healthImageTransform.sizeDelta = new Vector2(imageWidthHealth, imageHeightHealth);
-        height = 1 + botController.characterController.height / 1.5f;
-        tmpPosition = new Vector3(botController.transform.position.x,
-                                  botController.transform.position.y + height,
-                                  botController.transform.position.z);
-        screenPosition = cameraComponent.WorldToScreenPoint(tmpPosition);
-        healthImageTransform.position = screenPosition;
-        slider.value = botController.health;
+        position = botTransform.position;
+        screenPositionBot = Camera.main.WorldToScreenPoint(position);
+
+        position = botTransform.position + (Vector3.up * height);
+        screenPositionBotHeight = Camera.main.WorldToScreenPoint(position);
+
+        healthImageTransform.position = screenPositionBotHeight;
+        slider.value = health;
     }
 }

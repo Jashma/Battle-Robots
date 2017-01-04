@@ -12,7 +12,7 @@ public class UI_MainMenu : MonoBehaviour
         exitGame.onClick.RemoveAllListeners();
         startGame.onClick.RemoveAllListeners();
 
-        if (PlayerController.startGame == true)
+        if (PlayerController.inGame == true)
         {
             startGame.GetComponentInChildren<Text>().text = "Return";
             startGame.onClick.AddListener(delegate { ReturnToGame(); });
@@ -33,30 +33,29 @@ public class UI_MainMenu : MonoBehaviour
     private void StartGame()
     {
         //Debug.Log("Click button StartGame");
-        GetComponentInParent<UI_Controller>().ChangeState("ConnectionMenu");
-        
+        GetComponentInParent<UI_Controller>().ChangeState(0);//"ConnectionMenu"
+
     }
 
     private void Quit()
     {
         //Debug.Log("Click button Quit");
-        GetComponentInParent<UI_Controller>().ChangeState("Quit");
-        
+        GetComponentInParent<UI_Controller>().ChangeState(12);//"Quit"
+
     }
 
     private void ReturnToGame()
     {
         //Debug.Log("Click button ReturnToGame");
-        GetComponentInParent<UI_Controller>().ChangeState("InGame");
-        
+        GetComponentInParent<UI_Controller>().ChangeState(3);//"InGame"
+
     }
 
     private void ExitGame()
     {
         //Debug.Log("Click button ExitGame");
-        PlayerController.startGame = false;
-        LevelController.Instance.LoadLeavel(0);
-        GetComponentInParent<UI_Controller>().ChangeState("MainMenu");
-        
+        PlayerController.inGame = false;
+        GetComponentInParent<UI_Controller>().ChangeState(8);//"MainMenu"
+
     }
 }

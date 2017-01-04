@@ -2,16 +2,19 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
-public class UI_Modul : MonoBehaviour 
+public class UI_Modul : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    public ModulScr modulController;
+    [HideInInspector] public UnityEvent changeModulEvent;
+    public ModulType modulType;
     public Text modulText;
-    public Color enableColor;
-    public Color disableColor;
-    private float healthModul;
     private Image image;
     private int botID;
+    public ModulBasys modulController;
+    public bool showTextInformation;
+    private string message;
     //Debug
     public float health;
 
@@ -21,64 +24,118 @@ public class UI_Modul : MonoBehaviour
         {
             image = GetComponent<Image>();
             modulText = GetComponentInChildren<Text>();
+            changeModulEvent = new UnityEvent();
         }
 
-        modulController = null;
-
-        if (PlayerController.botController != null)
+        if (modulText == null)
         {
-            botID = PlayerController.botController.GetInstanceID();
-
-            foreach (ModulScr modul in PlayerController.botController.modulScr)
-            {
-                if (modul.transform.parent.tag == tag)
-                {
-                    modulController = modul;
-
-                    if (GetComponentInParent<UI_InGame>().showNameModul == true)
-                    {
-                        modulText.text = modulController.nameModul;
-                    }
-                    else
-                    {
-                        modulText.text = "";
-                    }
-
-<<<<<<< HEAD
-                if (modulController.modulType == ModulType.Reactor)
-                {
-                    message = modulController.modulReactor.EnergyPower.ToString("f0");
-=======
-                    GetComponent<Image>().color = enableColor;
-                    return;
->>>>>>> parent of a891378... Global update
-                }
-            }
-
-            image.color = disableColor;
+            showTextInformation = false;
         }
     }
 
     void Update()
     {
-        if (botID != PlayerController.botController.GetInstanceID())
+        if (GetBotID() == true)
         {
-            OnEnable();
+            if (modulController == null)
+            {
+                modulController = FindModul();
+                message = "No Modul";
+                image.color = UI_Controller.disableColor;
+            }
+            else
+            {
+                if (health != modulController.healthModul * 0.01f)
+                {
+                    health = modulController.healthModul * 0.01f;
+                    image.color = new Color(1 - health, health, 0, 0.5f);
+                }
+
+                if (health == 0)
+                {
+                    image.color = new Color(1 - health, health, 0, 0.5f);
+                }
+
+                if (modulController.modulType == ModulType.Reactor)
+                {
+                    message = modulController.modulReactor.EnergyPower.ToString("f0");
+                }
+                else
+                {
+                    message = "0";
+                }
+
+                SetText(message);
+            }
+        }
+    }
+
+    private ModulBasys FindModul()
+    {
+        foreach (ModulBasys modul in PlayerController.botController.modulController)
+        {
+            if (modul.modulType == modulType)
+            {
+                return modul;
+            }
+        }
+        return null;
+    }
+
+    private bool GetBotID()
+    {
+        if (botID != PlayerController.botController.gameObject.GetInstanceID())
+        {
+            botID = PlayerController.botController.gameObject.GetInstanceID();
+            return false;
         }
 
+        return true;
+    }
+
+    private bool EnableText()
+    {
+        if (showTextInformation == true)
+        {
+            modulText.enabled = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void SetText(string newText)
+    {
+        if (EnableText() == true && modulText.text != newText)
+        {
+            modulText.text = newText;
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
         if (modulController != null)
         {
-            if (health != modulController.health * 0.01f)
-            {
-                healthModul = modulController.health;
-                health = modulController.health * 0.01f;
-                image.color = new Color(1 - health, health, 0, 0.5f);
-            }
-
-            if (health == 0)
-            {
-                image.color = new Color(1 - health, health, 0, 0.5f);
-            }
+            modulController.AboutThis();
         }
+        else
+        {
+            Debug.Log("No modul controller");
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (UI_MouseInformation.Instance != null)
+        {
+            UI_MouseInformation.Instance.ClearMessage();
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        changeModulEvent.Invoke();
     }
 }

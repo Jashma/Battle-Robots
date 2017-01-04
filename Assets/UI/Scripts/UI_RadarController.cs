@@ -2,16 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
+
 public class UI_RadarController : MonoBehaviour 
 {
-    
-    public RectTransform searchLineTransform;
+    public RectTransform searchLineTransform;//Круг расширяющийся на экране радара
     public GameObject[] botIconRed;
     public GameObject[] botIconBlue;
     public Vector3 rotate;
     private RectTransform maskTransform;
     private int nextArrayIndex;
     private Text radarDistanceText;
+    private ModulRadar radarController;
+
 	void OnEnable () 
     {
         if (searchLineTransform == null)
@@ -43,7 +47,7 @@ public class UI_RadarController : MonoBehaviour
     //Создаем иконки ботов на радаре
     GameObject[] CreateBotIcon(GameObject[] botIcon, Color color)
     {
-        botIcon = new GameObject[LevelController.maxBot];
+        botIcon = new GameObject[GameController.maxBot];
 
         for (int i=0; i< botIcon.Length; i++)
         {
@@ -58,30 +62,40 @@ public class UI_RadarController : MonoBehaviour
         return botIcon;
     }
 
+
     void Update()
     {
-        if (PlayerController.botController != null)
+        if (radarController == null)
         {
-            if (radarDistanceText.text != PlayerController.botController.radarController.radarLength.ToString())
+            foreach (ModulBasys modul in PlayerController.botController.modulController)
             {
-                radarDistanceText.text = PlayerController.botController.radarController.radarLength.ToString();
+                if (modul.modulType == ModulType.Radar)
+                {
+                    radarController = modul.GetRadarController();
+                    return;
+                }
+            }
+        }
+        else
+        {
+            if (radarDistanceText.text != radarController.radarLength.ToString())
+            {
+                radarDistanceText.text = radarController.radarLength.ToString();
             }
 
-            if (PlayerController.botController.radarController.startCheck == true)
+            if (radarController.startCheck == true)
             {
                 searchLineTransform.gameObject.SetActive(true);
             }
 
             maskTransform.eulerAngles = new Vector3(0, 0, PlayerController.botController.transform.eulerAngles.y);
-
-            if (PlayerController.botController.botState == SM_BotState.AiControl && PlayerController.botController.botState != SM_BotState.PlayerControl)
-            {
-                ControllBotIcon(botIconBlue, LevelController.arrayBotControllerBlue);
-                ControllBotIcon(botIconRed, LevelController.arrayBotControllerRed);
-            }
         }
-    }
 
+        ControllBotIcon(botIconBlue, GameController.arrayBotControllerFriendTeam);
+        ControllBotIcon(botIconRed, GameController.arrayBotControllerEnemyTeam);
+
+    }
+    
     void ControllBotIcon(GameObject[] botIcon, List<BotController> botController)
     {
         for (int i = 0; i < botIcon.Length; i++)
@@ -93,7 +107,7 @@ public class UI_RadarController : MonoBehaviour
                     botIcon[i].name = "RadarIcon " + botController[i].gameObject.name;
                 }
 
-                if (PlayerController.playerTeam == botController[i].team)
+                if (botController[i].team == Team.Friend)
                 {
                     botIcon[i].SetActive(true);
 
@@ -125,5 +139,22 @@ public class UI_RadarController : MonoBehaviour
             }
         }
     }
-      
+
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (radarController != null)
+        {
+            radarController.AboutThis();
+        }
+        else
+        {
+            Debug.Log("No modul controller");
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        UI_MouseInformation.Instance.ClearMessage();
+    }
 }

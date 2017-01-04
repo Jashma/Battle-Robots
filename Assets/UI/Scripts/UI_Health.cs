@@ -7,9 +7,11 @@ public class UI_Health : MonoBehaviour
 {
     public Slider healthSlider;
     public Image image;
+    public float health;
+
     //Debug
     public Color colorDB;
-    public float health;
+    
 
     void Update()
     {

@@ -6,6 +6,6 @@ public class UI_ChangeLevel : MonoBehaviour
 
 	public void ChangeLevel (int level) 
     {
-        GameObject.Find("LevelController").GetComponent<LevelController>().LoadLeavel(level);
+        //GameObject.Find("LevelController").GetComponent<LevelController>().LoadLeavel(level);
 	}
 }
