@@ -1,0 +1,781 @@
+fileFormatVersion: 2
+guid: 8380f19930f96514f9be18b422bb25a6
+timeCreated: 1473786537
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: ammo_box
+    100002: ammo_tape
+    100004: bf_armor_left
+    100006: bf_armor_right
+    100008: bf_left
+    100010: bf_right
+    100012: //RootNode
+    100014: feet_armor_left
+    100016: feet_armor_right
+    100018: feet_left
+    100020: feet_right
+    100022: ff_1_armor_left
+    100024: ff_1_armor_right
+    100026: ff_1_left
+    100028: ff_1_right
+    100030: ff_2_armor_left
+    100032: ff_2_armor_right
+    100034: ff_2_left
+    100036: ff_2_right
+    100038: gin_muzzle
+    100040: gun_hull
+    100042: hip_armor_left
+    100044: hip_armor_right
+    100046: hip_left
+    100048: hip_right
+    100050: hydra_2_low_left
+    100052: hydra_2_low_right
+    100054: hydra_2_top_left
+    100056: hydra_2_top_right
+    100058: ikHandle1
+    100060: ikHandle2
+    100062: joint3
+    100064: joint45
+    100066: joint47
+    100068: joint58
+    100070: joint59
+    100072: joint6
+    100074: joint6 1
+    100076: joint60
+    100078: joint61
+    100080: joint62
+    100082: joint64
+    100084: joint66
+    100086: joint68
+    100088: joint8
+    100090: knee_1_left
+    100092: knee_1_right
+    100094: knee_2_left
+    100096: knee_2_right
+    100098: knee_armor_left
+    100100: knee_armor_right
+    100102: pelvic
+    100104: pelvis_skin
+    100106: root_bone
+    400000: ammo_box
+    400002: ammo_tape
+    400004: bf_armor_left
+    400006: bf_armor_right
+    400008: bf_left
+    400010: bf_right
+    400012: //RootNode
+    400014: feet_armor_left
+    400016: feet_armor_right
+    400018: feet_left
+    400020: feet_right
+    400022: ff_1_armor_left
+    400024: ff_1_armor_right
+    400026: ff_1_left
+    400028: ff_1_right
+    400030: ff_2_armor_left
+    400032: ff_2_armor_right
+    400034: ff_2_left
+    400036: ff_2_right
+    400038: gin_muzzle
+    400040: gun_hull
+    400042: hip_armor_left
+    400044: hip_armor_right
+    400046: hip_left
+    400048: hip_right
+    400050: hydra_2_low_left
+    400052: hydra_2_low_right
+    400054: hydra_2_top_left
+    400056: hydra_2_top_right
+    400058: ikHandle1
+    400060: ikHandle2
+    400062: joint3
+    400064: joint45
+    400066: joint47
+    400068: joint58
+    400070: joint59
+    400072: joint6
+    400074: joint6 1
+    400076: joint60
+    400078: joint61
+    400080: joint62
+    400082: joint64
+    400084: joint66
+    400086: joint68
+    400088: joint8
+    400090: knee_1_left
+    400092: knee_1_right
+    400094: knee_2_left
+    400096: knee_2_right
+    400098: knee_armor_left
+    400100: knee_armor_right
+    400102: pelvic
+    400104: pelvis_skin
+    400106: root_bone
+    2300000: ammo_box
+    2300002: ammo_tape
+    2300004: bf_armor_left
+    2300006: bf_armor_right
+    2300008: feet_armor_left
+    2300010: feet_armor_right
+    2300012: ff_1_armor_left
+    2300014: ff_1_armor_right
+    2300016: ff_2_armor_left
+    2300018: ff_2_armor_right
+    2300020: gin_muzzle
+    2300022: gun_hull
+    2300024: hip_armor_left
+    2300026: hip_armor_right
+    2300028: knee_armor_left
+    3300000: ammo_box
+    3300002: ammo_tape
+    3300004: bf_armor_left
+    3300006: bf_armor_right
+    3300008: feet_armor_left
+    3300010: feet_armor_right
+    3300012: ff_1_armor_left
+    3300014: ff_1_armor_right
+    3300016: ff_2_armor_left
+    3300018: ff_2_armor_right
+    3300020: gin_muzzle
+    3300022: gun_hull
+    3300024: hip_armor_left
+    3300026: hip_armor_right
+    3300028: knee_armor_left
+    4300000: hip_armor_right
+    4300002: hip_armor_left
+    4300004: knee_armor_left
+    4300006: knee_armor_right
+    4300008: feet_armor_left
+    4300010: feet_armor_right
+    4300012: ff_1_armor_left
+    4300014: ff_1_armor_right
+    4300016: bf_armor_left
+    4300018: ff_2_armor_left
+    4300020: ff_2_armor_right
+    4300022: bf_armor_right
+    4300024: ammo_box
+    4300026: ammo_tape
+    4300028: gin_muzzle
+    4300030: gun_hull
+    4300032: pelvis_skin
+    7400000: Bush ActionDefault
+    7400002: Bush ActionStart
+    7400004: Bush ActionEnd
+    7400006: Bush ActionWait
+    9500000: //RootNode
+    13700000: knee_armor_right
+    13700002: pelvis_skin
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Bush ActionDefault
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 70
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: ammo_box
+        weight: 1
+      - path: ammo_tape
+        weight: 1
+      - path: bf_armor_left
+        weight: 1
+      - path: bf_armor_right
+        weight: 1
+      - path: feet_armor_left
+        weight: 1
+      - path: feet_armor_right
+        weight: 1
+      - path: ff_1_armor_left
+        weight: 1
+      - path: ff_1_armor_right
+        weight: 1
+      - path: ff_2_armor_left
+        weight: 1
+      - path: ff_2_armor_right
+        weight: 1
+      - path: gin_muzzle
+        weight: 1
+      - path: gun_hull
+        weight: 1
+      - path: hip_armor_left
+        weight: 1
+      - path: hip_armor_right
+        weight: 1
+      - path: knee_armor_left
+        weight: 1
+      - path: knee_armor_right
+        weight: 1
+      - path: pelvis_skin
+        weight: 1
+      - path: root_bone
+        weight: 1
+      - path: root_bone/ikHandle1
+        weight: 1
+      - path: root_bone/ikHandle2
+        weight: 1
+      - path: root_bone/pelvic
+        weight: 1
+      - path: root_bone/pelvic/hip_left
+        weight: 1
+      - path: root_bone/pelvic/hip_left/joint68
+        weight: 1
+      - path: root_bone/pelvic/hip_right
+        weight: 1
+      - path: root_bone/pelvic/hip_right/joint58
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/hydra_2_top_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/hydra_2_top_left/joint66
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/hydra_2_low_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/hydra_2_low_left/joint64
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/bf_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/bf_left/joint62
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_1_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_1_left/joint60
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_2_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_2_left/joint61
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/hydra_2_top_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/hydra_2_top_right/joint47
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/hydra_2_low_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/hydra_2_low_right/joint45
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/bf_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/bf_right/joint8
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_1_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_1_right/joint6
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_2_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_2_right/joint6
+          1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Bush ActionStart
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: ammo_box
+        weight: 1
+      - path: ammo_tape
+        weight: 1
+      - path: bf_armor_left
+        weight: 1
+      - path: bf_armor_right
+        weight: 1
+      - path: feet_armor_left
+        weight: 1
+      - path: feet_armor_right
+        weight: 1
+      - path: ff_1_armor_left
+        weight: 1
+      - path: ff_1_armor_right
+        weight: 1
+      - path: ff_2_armor_left
+        weight: 1
+      - path: ff_2_armor_right
+        weight: 1
+      - path: gin_muzzle
+        weight: 1
+      - path: gun_hull
+        weight: 1
+      - path: hip_armor_left
+        weight: 1
+      - path: hip_armor_right
+        weight: 1
+      - path: knee_armor_left
+        weight: 1
+      - path: knee_armor_right
+        weight: 1
+      - path: pelvis_skin
+        weight: 1
+      - path: root_bone
+        weight: 1
+      - path: root_bone/ikHandle1
+        weight: 1
+      - path: root_bone/ikHandle2
+        weight: 1
+      - path: root_bone/pelvic
+        weight: 1
+      - path: root_bone/pelvic/hip_left
+        weight: 1
+      - path: root_bone/pelvic/hip_left/joint68
+        weight: 1
+      - path: root_bone/pelvic/hip_right
+        weight: 1
+      - path: root_bone/pelvic/hip_right/joint58
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/hydra_2_top_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/hydra_2_top_left/joint66
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/hydra_2_low_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/hydra_2_low_left/joint64
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/bf_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/bf_left/joint62
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_1_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_1_left/joint60
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_2_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_2_left/joint61
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/hydra_2_top_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/hydra_2_top_right/joint47
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/hydra_2_low_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/hydra_2_low_right/joint45
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/bf_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/bf_right/joint8
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_1_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_1_right/joint6
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_2_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_2_right/joint6
+          1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: Bush ActionEnd
+      takeName: Take 001
+      firstFrame: 45
+      lastFrame: 70
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: ammo_box
+        weight: 1
+      - path: ammo_tape
+        weight: 1
+      - path: bf_armor_left
+        weight: 1
+      - path: bf_armor_right
+        weight: 1
+      - path: feet_armor_left
+        weight: 1
+      - path: feet_armor_right
+        weight: 1
+      - path: ff_1_armor_left
+        weight: 1
+      - path: ff_1_armor_right
+        weight: 1
+      - path: ff_2_armor_left
+        weight: 1
+      - path: ff_2_armor_right
+        weight: 1
+      - path: gin_muzzle
+        weight: 1
+      - path: gun_hull
+        weight: 1
+      - path: hip_armor_left
+        weight: 1
+      - path: hip_armor_right
+        weight: 1
+      - path: knee_armor_left
+        weight: 1
+      - path: knee_armor_right
+        weight: 1
+      - path: pelvis_skin
+        weight: 1
+      - path: root_bone
+        weight: 1
+      - path: root_bone/ikHandle1
+        weight: 1
+      - path: root_bone/ikHandle2
+        weight: 1
+      - path: root_bone/pelvic
+        weight: 1
+      - path: root_bone/pelvic/hip_left
+        weight: 1
+      - path: root_bone/pelvic/hip_left/joint68
+        weight: 1
+      - path: root_bone/pelvic/hip_right
+        weight: 1
+      - path: root_bone/pelvic/hip_right/joint58
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/hydra_2_top_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/hydra_2_top_left/joint66
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/hydra_2_low_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/hydra_2_low_left/joint64
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/bf_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/bf_left/joint62
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_1_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_1_left/joint60
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_2_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_2_left/joint61
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/hydra_2_top_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/hydra_2_top_right/joint47
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/hydra_2_low_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/hydra_2_low_right/joint45
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/bf_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/bf_right/joint8
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_1_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_1_right/joint6
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_2_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_2_right/joint6
+          1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: Bush ActionWait
+      takeName: Take 001
+      firstFrame: 20
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: ammo_box
+        weight: 1
+      - path: ammo_tape
+        weight: 1
+      - path: bf_armor_left
+        weight: 1
+      - path: bf_armor_right
+        weight: 1
+      - path: feet_armor_left
+        weight: 1
+      - path: feet_armor_right
+        weight: 1
+      - path: ff_1_armor_left
+        weight: 1
+      - path: ff_1_armor_right
+        weight: 1
+      - path: ff_2_armor_left
+        weight: 1
+      - path: ff_2_armor_right
+        weight: 1
+      - path: gin_muzzle
+        weight: 1
+      - path: gun_hull
+        weight: 1
+      - path: hip_armor_left
+        weight: 1
+      - path: hip_armor_right
+        weight: 1
+      - path: knee_armor_left
+        weight: 1
+      - path: knee_armor_right
+        weight: 1
+      - path: pelvis_skin
+        weight: 1
+      - path: root_bone
+        weight: 1
+      - path: root_bone/ikHandle1
+        weight: 1
+      - path: root_bone/ikHandle2
+        weight: 1
+      - path: root_bone/pelvic
+        weight: 1
+      - path: root_bone/pelvic/hip_left
+        weight: 1
+      - path: root_bone/pelvic/hip_left/joint68
+        weight: 1
+      - path: root_bone/pelvic/hip_right
+        weight: 1
+      - path: root_bone/pelvic/hip_right/joint58
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/hydra_2_top_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/hydra_2_top_left/joint66
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/hydra_2_low_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/hydra_2_low_left/joint64
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/bf_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/bf_left/joint62
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_1_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_1_left/joint60
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_2_left
+        weight: 1
+      - path: root_bone/pelvic/knee_1_left/knee_2_left/joint59/feet_left/ff_2_left/joint61
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/hydra_2_top_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/hydra_2_top_right/joint47
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/hydra_2_low_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/hydra_2_low_right/joint45
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/bf_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/bf_right/joint8
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_1_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_1_right/joint6
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_2_right
+        weight: 1
+      - path: root_bone/pelvic/knee_1_right/knee_2_right/joint3/feet_right/ff_2_right/joint6
+          1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 100
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: root_bone
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
