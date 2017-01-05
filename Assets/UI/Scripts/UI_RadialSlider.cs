@@ -65,6 +65,7 @@ public class UI_RadialSlider : MonoBehaviour
         {
             if (modulList.Count > i)
             {
+                /*
                 if (modulList[i] != null && modulList[i].useEnergy == true)
                 {
                     slider[i].fillAmount = modulList[i].energyReloadQuoue / 100;
@@ -74,6 +75,7 @@ public class UI_RadialSlider : MonoBehaviour
                     slider[i].fillAmount = 0;
                     slider[i].transform.parent.gameObject.SetActive(false);
                 }
+                 */ 
             }
             else
             {
@@ -93,7 +95,7 @@ public class UI_RadialSlider : MonoBehaviour
 
             if (modulList[i] != null)
             {
-                modulList[i].energyReloadQuoue = slider[i].fillAmount * 100;
+                //modulList[i].energyReloadQuoue = slider[i].fillAmount * 100;
                 slider[i].GetComponentInChildren<Text>().text = modulList[i].EnergyPower.ToString("f0");
             }
         }

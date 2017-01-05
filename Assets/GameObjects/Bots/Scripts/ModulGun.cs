@@ -9,12 +9,9 @@ public class ModulGun : ModulBasys
     public float powerMin = 2;//Сила пробития минимальная
     public float powerMax = 4;//Сила пробития максимальная
     public float correct = 1;//Разброс
-    public float energyValue;
     public int ammo;//Текущее количество снарядов в магазине
+    public float energyValue;//Запас энергии с которой вылетает снаряд
     public LayerMask layerMask;
-
-    //Debug
-    public float energyReloadValue;
 
     private AudioClip shootClip;//Звук выстрела
     private AudioSource audioSorce;//Источние звука (компонент находится на коренном обьекте)
@@ -78,7 +75,7 @@ public class ModulGun : ModulBasys
 
     public override void Shoot(bool showFlyHit)//Выстрел
     {
-        if (ammo > 0 && energyValue >= energyMinToAction)
+        if (ammo > 0)
         {
             for (int i = 0; i < bulletArray.Count; i++)
             {
@@ -90,7 +87,6 @@ public class ModulGun : ModulBasys
                     bulletArray[i].projectilBasys.powerMin = powerMin;
                     bulletArray[i].projectilBasys.powerMax = powerMax;
                     bulletArray[i].Shoot(GetGunTarget(), showFlyHit, energyValue);
-                    ActionModul(energyValue);
 
                     //-=Вспышка выстрела=-// проигрывается при включении, потому сперва выключаем, потом включаем
                     muzzleFire.SetActive(false);
@@ -131,37 +127,6 @@ public class ModulGun : ModulBasys
         tmpObj.transform.localPosition = Vector3.zero;
         tmpObj.transform.localEulerAngles = Vector3.zero;
         bulletArray.Add(tmpObj.GetComponent<ProjectileController>());
-    }
-
-    public override bool ActionModul(float clearEnergy)
-    {
-        if (energyValue >= clearEnergy)
-        {
-            energyValue -= clearEnergy;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public override float ReloadEnergy(float reloadEnergy)
-    {
-        /*
-        if (energyValue < energyMaxValue)
-        {
-            reloadEnergy = (reloadEnergy / 100) * energyReloadQuoue;
-            //Debug
-            energyReloadValue = reloadEnergy;
-            //EndDebug
-            energyValue = energyValue + reloadEnergy;
-
-            if (energyValue > energyMaxValue) { energyValue = energyMaxValue; }
-            return reloadEnergy;
-        }
-        */
-        return 0;
     }
 
     void CorrectShoot()

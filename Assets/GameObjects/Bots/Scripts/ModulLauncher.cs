@@ -83,13 +83,12 @@ public class ModulLauncher : ModulBasys
 
     public override void Shoot(bool showFlyHit)//Выстрел
     {
-        if (ammo > 0 && energyValue >= energyMinToAction)
+        if (ammo > 0)
         {
             if (rocketArray[ammo - 1].readyToShoot == true)
             {
                 rocketArray[ammo - 1].Shoot(parentTransform.TransformPoint(Vector3.forward * 500), showFlyHit);
                 ammo -= 1;//Уменьшам количество патронов в магазине
-                ActionModul(energyMinToAction);
                 return;
             }
         }
@@ -123,38 +122,9 @@ public class ModulLauncher : ModulBasys
         }
     }
 
-    public override bool ActionModul(float clearEnergy)
-    {
-        if (energyValue >= clearEnergy)
-        {
-            energyValue -= clearEnergy;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     public override void ReloadWeapon()
     {
         startReload = true;
-    }
-
-    public override float ReloadEnergy(float reloadEnergy)
-    {
-        /*
-        if (energyValue < energyMaxValue)
-        {
-            reloadEnergy = (reloadEnergy / 100) * energyReloadQuoue;
-
-            energyValue = energyValue + reloadEnergy;
-
-            if (energyValue > energyMaxValue) { energyValue = energyMaxValue; }
-            return reloadEnergy;
-        }
-        */
-        return 0;
     }
 
     public override bool GetDamage(float damage, float power, bool showFlyHit)

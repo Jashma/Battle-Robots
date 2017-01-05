@@ -109,10 +109,4 @@ public class ModulBody : ModulBasys
 
     }
 
-    public override float ReloadEnergy(float reloadEnergy)
-    {
-        EnergyPower = (reloadEnergy / 100) * energyReloadQuoue;
-
-        return EnergyPower;
-    }
 }

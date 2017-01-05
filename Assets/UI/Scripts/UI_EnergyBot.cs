@@ -49,22 +49,22 @@ public class UI_EnergyBot : MonoBehaviour
                     if (modul.modulType == ModulType.Reactor)
                     {
                         modulController = modul.GetModulReactor();
-                        energySlider.maxValue = modulController.EnergyPower;
+                        energySlider.maxValue = modulController.powerDefault;
                     }
                 }
             }
 
             if (modulController != null)
             {
-                energySlider.value = modulController.energyPowerCurrent;
+                energySlider.value = modulController.EnergyPower;
 
                 if (currentValueText != null)
                 {
-                    currentValueText.text = modulController.energyPowerCurrent.ToString("f0");
+                    currentValueText.text = modulController.EnergyPower.ToString("f0");
                 }
 
-                maxValueText.text = modulController.EnergyPower.ToString("f0");
-                value = modulController.energyPowerCurrent * 0.1f;
+                maxValueText.text = modulController.powerDefault.ToString("f0");
+                value = modulController.EnergyPower * 0.1f;
                 image.color = new Color(1 - value, value, 0);
                 colorDB = new Color(1 - value, value, 0);
                 

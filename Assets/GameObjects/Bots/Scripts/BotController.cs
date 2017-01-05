@@ -150,7 +150,7 @@ public class BotController : MonoBehaviour
             modul.modulStatus = ModulStatus.On;
         }
 
-        ReCalculate();
+        //ReCalculate();
     }
 
     void Move()
@@ -358,7 +358,7 @@ public class BotController : MonoBehaviour
         foreach (ModulBasys modul in modulController)
         {
             {
-                modul.energyReloadQuoue *= mLocalHash;
+                //modul.energyReloadQuoue *= mLocalHash;
             }
         }
     }
@@ -371,7 +371,7 @@ public class BotController : MonoBehaviour
         {
             if (modulController[i].modulStatus == ModulStatus.On)
             {
-                sum += modulController[i].energyReloadQuoue;
+                //sum += modulController[i].energyReloadQuoue;
             }
         }
 

@@ -70,7 +70,7 @@ public class UI_CircularBar : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     private void ValueAdd()
     {
-        modulController.energyReloadQuoue = sliderImage.fillAmount * 100;
+        //modulController.energyReloadQuoue = sliderImage.fillAmount * 100;
     }
 
     private void SetFillAmount(float value)

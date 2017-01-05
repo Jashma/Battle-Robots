@@ -103,11 +103,4 @@ public class ModulGunController : ModulBasys
         base.GetDamage(damage, power, showFlyHit);
         return false;
     }
-
-    public override float ReloadEnergy(float reloadEnergy)
-    {
-        EnergyPower = (reloadEnergy / 100) * energyReloadQuoue;
-
-        return EnergyPower;
-    }
 }

@@ -58,7 +58,7 @@ public class UI_Modul : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
                 if (modulController.modulType == ModulType.Reactor)
                 {
-                    message = modulController.modulReactor.EnergyPower.ToString("f0");
+                    message = modulController.EnergyPower.ToString("f0");
                 }
                 else
                 {

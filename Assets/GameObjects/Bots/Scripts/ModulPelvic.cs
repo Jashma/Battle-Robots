@@ -54,13 +54,4 @@ public class ModulPelvic :  ModulBasys
         base.GetDamage(damage, power, showFlyHit);
         return false;
     }
-
-    public override float ReloadEnergy(float reloadEnergy)
-    {
-        EnergyPower = (reloadEnergy / 100) * energyReloadQuoue;
-
-        //energyPower = Mathf.Clamp(energyPower, 0, energyMaxValue);
-
-        return EnergyPower;
-    }
 }

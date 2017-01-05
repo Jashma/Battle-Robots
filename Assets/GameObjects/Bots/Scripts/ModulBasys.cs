@@ -49,25 +49,22 @@ public abstract class ModulBasys : MonoBehaviour
     public float armoreModul;
     public string[] information;
     public int coast = 0;
-    public bool useEnergy = false;
-    public float energyMaxValue = 100;
-    public float energyMinToAction = 10;//Минимальное количество энергии, необходимое для действия 
-    public float energyDefaultReloadQuoue = 10;//Очерёдность потребления энергии
-    public float energyReloadQuoue = 10;//Очерёдность потребления энергии
-    private float energyPower;
     public GameObject smokeObj;
     public GameObject sparkleObj;
     public GameObject[] modulAddOn = new GameObject[0];
     public Transform thisTransform;
     public ModulReactor modulReactor;
+    public float energyReloadQuoue; //Процетн потребления энергии
+    public float energyMaxValue;
 
+    private float energyPower;
     public float EnergyPower
     {
         get { return energyPower; }
 
         set
         {
-            energyPower =  Mathf.Clamp(value, 0, energyMaxValue);
+            energyPower = Mathf.Clamp(value, 0, energyMaxValue);
         }
     }
 
@@ -185,16 +182,6 @@ public abstract class ModulBasys : MonoBehaviour
     }
 
     virtual public int GetNumberModul()
-    {
-        return 0;
-    }
-
-    virtual public bool ActionModul(float clearEnergy)
-    {
-        return false;
-    }
-
-    virtual public float ReloadEnergy(float reloadEnergy)
     {
         return 0;
     }
