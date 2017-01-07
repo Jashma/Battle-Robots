@@ -10,9 +10,7 @@ public class UI_LauncherReloadController : UI_BotInterfaceBasys
     public Text nameWeaponText;
     public Text reloadTimeText;
     public Slider reloadSlider;
-
-    public Color readyColor;
-
+    public Image reloadImage;
     private ModulLauncher modul;
     private int botID;
     public Image[] rocketArray;
@@ -112,14 +110,22 @@ public class UI_LauncherReloadController : UI_BotInterfaceBasys
 
     public override void CheckMenuState(ModulStatus modulStatus)
     {
-
         base.CheckMenuState(modulStatus);
+
+        if (modul.EnergyValue <= modul.energyMinToAction)
+        {
+            reloadImage.color = allarmColor;
+        }
+        else
+        {
+            reloadImage.color = defaultColor;
+        }
 
         reloadTimeText.color = currentColor;
         nameWeaponText.color = currentColor;
         reloadSlider.maxValue = modul.energyMaxValue;
-        reloadSlider.value = modul.energyValue;
-        reloadTimeText.text = modul.energyValue.ToString("f0");
+        reloadSlider.value = modul.EnergyValue;
+        reloadTimeText.text = modul.EnergyValue.ToString("f0");
     }
 
     public override void CheckMenuPosition()

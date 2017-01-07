@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public class ModulReactor : ModulBasys
 {
-    public float powerDefault = 100;
     private BotController botController;
-
+    private int valueUseEnergyModul;
+    public float lastEnergy;
     //Debug
     public List<ModulBasys> modulBasys = new List<ModulBasys>();
 
@@ -14,6 +14,23 @@ public class ModulReactor : ModulBasys
     {
         base.OnEnable();
         botController = GetComponentInParent<BotController>();
+    }
+
+    public override void startReactor(ModulBasys[] modulController)
+    {
+        valueUseEnergyModul = 0;
+        modulBasys.Clear();
+
+        foreach (ModulBasys modul in modulController)
+        {
+            modul.modulReactor = this;
+
+            if (modul.energyMinToAction > 0)
+            {
+                valueUseEnergyModul++;
+                modulBasys.Add(modul);
+            }
+        }
     }
 
     public override ModulReactor GetReactorModul()
@@ -31,12 +48,30 @@ public class ModulReactor : ModulBasys
     {
         if (modulStatus == ModulStatus.On)
         {
-            
+            ReloadEnergy();
+            ReloadAllEnergy();
         }
     }
 
     public override ModulReactor GetModulReactor()
     {
         return this;
+    }
+
+    private void ReloadEnergy()
+    {
+        lastEnergy = EnergyPower;
+        EnergyPower = energyMaxValue;
+    }
+
+    private void ReloadAllEnergy()
+    {
+        foreach (ModulBasys modul in botController.modulController)
+        {
+            if (modul.modulStatus == ModulStatus.On)
+            {
+                EnergyPower -= modul.ReloadEnergy(EnergyPower);
+            }
+        }
     }
 }

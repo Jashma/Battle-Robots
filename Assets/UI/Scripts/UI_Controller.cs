@@ -39,8 +39,9 @@ public enum UI_InGameMenu
 public class UI_Controller : MonoBehaviour 
 {
     public static Transform currentMenuTransform;
-    public static Color enableColor = Color.white;
-    public static Color disableColor = Color.gray;
+    public Color enableColor;
+    public Color disableColor;
+    public Color hideColor;
     public Transform sceneObjTransform;
     public Transform[] uiMenuTransform;
     [HideInInspector]
@@ -55,7 +56,7 @@ public class UI_Controller : MonoBehaviour
     public static UI_InGameMenu uiInGameMenu;
     public static float speedMoveMenu = 25;
     public static float speedScaleMenu = 0.01f;
-    //public static bool actionMenu;
+
     //Debug
     public UI_State currentUiState;
     public UI_InGameMenu currentUiInGameMenu;

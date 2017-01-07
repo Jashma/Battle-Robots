@@ -4,17 +4,17 @@ using System.Collections.Generic;
 
 public class ModulLauncher : ModulBasys
 {
+    public int battary = 1;
     public int maxAmmo = 4;//Максимальное количество снарядов в магазине
     public float damage = 1;//Сила повреждений
     public float powerMin = 2;//Сила пробития минимальная
     public float powerMax = 4;//Сила пробития максимальная
     public float correct = 1;//Разброс
-    public float energyValue;
+    
     public bool startReload = false;
     //[HideInInspector]
     public int ammo = 0;//Текущее количество снарядов в магазине
     public LayerMask layerMask;
-    [HideInInspector]
     public Vector3[] rocketPosition;
     public List<ProjectileController> rocketArray = new List<ProjectileController>(1);
 
@@ -24,6 +24,17 @@ public class ModulLauncher : ModulBasys
     private Transform parentTransform;
     private Ray rayCollision;
     private RaycastHit hitCollision;
+
+    private float energy;
+    public float EnergyValue
+    {
+        get { return energy; }
+
+        set
+        {
+            energy = Mathf.Clamp(value, 0, energyMaxValue);
+        }
+    }
 
     void OnEnable()
     {
@@ -40,10 +51,23 @@ public class ModulLauncher : ModulBasys
             audioSorce = GetComponentInParent<AudioSource>();
         }
 
+        energyMaxValue = battary * 1000;
+        EnergyValue = battary * 1000;
+        
         parentTransform = transform.parent;
-        FindAllRocket();
-        //maxAmmo = rocketArray.Count;
+        InstanceRocket();
         ammo = rocketArray.Count;//Полный магазин
+    }
+
+    void InstanceRocket()
+    {
+        for (int i = 0; i < rocketPosition.Length; i++)
+        {
+            GameObject tmpObj = Instantiate(Resources.Load("prefabs/Weapon/ShellRocket")) as GameObject;
+            tmpObj.transform.SetParent(transform);
+            tmpObj.transform.localPosition = rocketPosition[i];
+            rocketArray.Add(tmpObj.GetComponent<ProjectileController>());
+        }
     }
 
     void Update()
@@ -83,12 +107,13 @@ public class ModulLauncher : ModulBasys
 
     public override void Shoot(bool showFlyHit)//Выстрел
     {
-        if (ammo > 0)
+        if (ammo > 0 && EnergyValue >= energyMinToAction)
         {
             if (rocketArray[ammo - 1].readyToShoot == true)
             {
                 rocketArray[ammo - 1].Shoot(parentTransform.TransformPoint(Vector3.forward * 500), showFlyHit);
                 ammo -= 1;//Уменьшам количество патронов в магазине
+                ActionModul(energyMinToAction);
                 return;
             }
         }
@@ -96,35 +121,38 @@ public class ModulLauncher : ModulBasys
 
     void Reload()//Выполняем перезарядку
     {
-        //if (ammo <= 0 && maxAmmo > ammo)
+        //-=перезарядка=-//
+        foreach (ProjectileController controller in rocketArray)
         {
-            //-=перезарядка=-//
-            foreach (ProjectileController controller in rocketArray)
+            if (controller.readyToReload == true)
             {
-                if (controller.readyToReload == true)
-                {
-                    controller.Reload();
-                    ammo++;
-                }
+                controller.Reload();
+                ammo++;
             }
-        }
-    }
-
-    void FindAllRocket()
-    {
-        foreach (Transform nextTransform in GetComponentsInChildren<Transform>())
-        {
-            if (nextTransform.name == "ShellRocket")
-            {
-                rocketArray.Add(nextTransform.GetComponentInChildren<ProjectileController>());
-            }
-
         }
     }
 
     public override void ReloadWeapon()
     {
         startReload = true;
+    }
+
+    public override void ActionModul(float clearEnergy)
+    {
+        base.ActionModul(clearEnergy);
+        EnergyValue -= clearEnergy;
+    }
+
+    public override float ReloadEnergy(float reloadEnergy)
+    {
+        if (EnergyValue < energyMaxValue)
+        {
+            EnergyPower = (reloadEnergy / 100) * energyReloadQuoue;
+            EnergyValue += EnergyPower;
+            return EnergyPower;
+        }
+
+        return 0;
     }
 
     public override bool GetDamage(float damage, float power, bool showFlyHit)

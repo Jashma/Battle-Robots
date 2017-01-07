@@ -54,7 +54,7 @@ public class UI_InGame : MonoBehaviour
     void AddChangeSizeButton()
     {
         showModulMenuButton.onClick.RemoveAllListeners();
-        showModulMenuButton.onClick.AddListener(delegate { ShowModulEnergyMenu(2); });
+        showModulMenuButton.onClick.AddListener(delegate { ShowModulEnergyMenu(3); });
     }
 
     void SetActiveInGameMenu()
@@ -72,7 +72,7 @@ public class UI_InGame : MonoBehaviour
         }
     }
 
-    public void ShowModulEnergyMenu(int value = 2)
+    public void ShowModulEnergyMenu(int value = 3)
     {
         UI_Controller.Instance.ChangeActionMenuState(value);//ChangeReloadEnergyQuoue
         //UI_Controller.Instance.ChangeActionMenuState(3);//BigModulInterface

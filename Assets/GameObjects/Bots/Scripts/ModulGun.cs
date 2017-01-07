@@ -4,14 +4,17 @@ using System.Collections.Generic;
 
 public class ModulGun : ModulBasys 
 {
+    public int battary = 1;
     public int maxAmmo = 100;//Максимальное количество снарядов в магазине
     public float damage = 1;//Сила повреждений
     public float powerMin = 2;//Сила пробития минимальная
     public float powerMax = 4;//Сила пробития максимальная
     public float correct = 1;//Разброс
     public int ammo;//Текущее количество снарядов в магазине
-    public float energyValue;//Запас энергии с которой вылетает снаряд
     public LayerMask layerMask;
+
+    //Debug
+    public float energyReloadValue;
 
     private AudioClip shootClip;//Звук выстрела
     private AudioSource audioSorce;//Источние звука (компонент находится на коренном обьекте)
@@ -21,16 +24,33 @@ public class ModulGun : ModulBasys
     private RaycastHit hitCollision;
     private Transform parentTransform;
 
+    private float energy;
+    public float EnergyValue
+    {
+        get { return energy; }
+
+        set
+        {
+            energy = Mathf.Clamp(value, 0, energyMaxValue);
+        }
+    }
+
+    void Awake()
+    {
+        //Загружает обьект вспышки выстрела
+        if (muzzleFire == null)
+        {
+            muzzleFire = transform.FindChild("MuzzleFire").gameObject;
+            muzzleFire.gameObject.SetActive(false);
+        }
+        
+    }
+
     void OnEnable()
     {
         base.OnEnable();
         ammo = maxAmmo;//Полный магазин
 
-        //Загружает обьект вспышки выстрела
-        if (muzzleFire == null) 
-        {
-            muzzleFire = transform.FindChild("MuzzleFire").gameObject;
-        }
         //Заргужает звук выстрела
         if (shootClip == null)
         {
@@ -49,7 +69,8 @@ public class ModulGun : ModulBasys
         }
 
         parentTransform = transform.parent;
-
+        energyMaxValue = battary * 10000;
+        EnergyValue = battary * 10000;
         //Debug
         damage = Random.Range(4, 8);
     }
@@ -75,7 +96,7 @@ public class ModulGun : ModulBasys
 
     public override void Shoot(bool showFlyHit)//Выстрел
     {
-        if (ammo > 0)
+        if (ammo > 0 && EnergyValue >= energyMinToAction)
         {
             for (int i = 0; i < bulletArray.Count; i++)
             {
@@ -86,8 +107,8 @@ public class ModulGun : ModulBasys
                     bulletArray[i].projectilBasys.damage = damage;
                     bulletArray[i].projectilBasys.powerMin = powerMin;
                     bulletArray[i].projectilBasys.powerMax = powerMax;
-                    bulletArray[i].Shoot(GetGunTarget(), showFlyHit, energyValue);
-
+                    bulletArray[i].Shoot(GetGunTarget(), showFlyHit, EnergyValue);
+                    ActionModul(EnergyValue);
                     //-=Вспышка выстрела=-// проигрывается при включении, потому сперва выключаем, потом включаем
                     muzzleFire.SetActive(false);
                     muzzleFire.SetActive(true);
@@ -123,7 +144,7 @@ public class ModulGun : ModulBasys
     void InstanceBullet()//Заргужает обьект пулю
     {
         GameObject tmpObj = Instantiate(Resources.Load("Prefabs/Weapon/ShellBullet") as GameObject);
-        tmpObj.transform.SetParent(muzzleFire.transform);
+        tmpObj.transform.SetParent(transform);
         tmpObj.transform.localPosition = Vector3.zero;
         tmpObj.transform.localEulerAngles = Vector3.zero;
         bulletArray.Add(tmpObj.GetComponent<ProjectileController>());
@@ -146,5 +167,22 @@ public class ModulGun : ModulBasys
         {
             return "";
         }
+    }
+
+    public override void ActionModul(float clearEnergy)
+    {
+        EnergyValue -= clearEnergy;
+    }
+
+    public override float ReloadEnergy(float reloadEnergy)
+    {
+        if (EnergyValue < energyMaxValue)
+        {
+            EnergyPower = (reloadEnergy / 100) * energyReloadQuoue;
+            EnergyValue += EnergyPower;
+            return EnergyPower;
+        }
+
+        return 0;
     }
 }

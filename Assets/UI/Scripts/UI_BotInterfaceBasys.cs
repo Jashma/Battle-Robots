@@ -17,8 +17,11 @@ public abstract class UI_BotInterfaceBasys : MonoBehaviour, IPointerEnterHandler
     public Vector3 hidePosition;
     public Vector3 disablePosition;
     public string nameInterface;
+    public Color defaultColor;
     public Color enableColor;
     public Color disableColor;
+    public Color readyColor;
+    public Color allarmColor;
     public Color currentColor;
     public MenuPosition currentPosition;
     public ModulStatus modulStatus;

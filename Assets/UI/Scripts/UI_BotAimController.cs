@@ -37,7 +37,7 @@ public class UI_BotAimController : MonoBehaviour
             DrawGunCrosshair(modulGun.GetGunTarget());
             ShowAimTargetText();
 
-            Debug.DrawLine(modulGun.thisTransform.position, modulGun.thisTransform.TransformPoint(Vector3.forward * 100));
+            //Debug.DrawLine(modulGun.thisTransform.position, modulGun.thisTransform.TransformPoint(Vector3.forward * 100));
         }
     }
 

@@ -60,4 +60,19 @@ public class GameController : MonoBehaviour
 
         return null;
     }
+
+    public Transform FindTransform(GameObject parentObj, string name)
+    {
+        Transform[] tmpTransform = parentObj.GetComponentsInChildren<Transform>();
+
+        foreach (Transform tmp in tmpTransform)
+        {
+            if (tmp.name == name)
+            {
+                return tmp;
+            }
+        }
+
+        return null;
+    }
 }

@@ -23,9 +23,6 @@ public class UI_SelectElement : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     void Start()
     {
-        //normalColor = UI_Controller.instance.elementMenuColor;
-        //highlightColorInitial = UI_Controller.instance.elementMenuColor;
-        //highlightColorFadeTo = UI_Controller.instance.elementMenuColor;
         highlightColorInitial.a = 0.5f;
 
         //Если ссылки не назначены в инспекторе, назначаем компоненты на всех дочерних обьектах

@@ -345,6 +345,19 @@ public class BotController : MonoBehaviour
         ChangeState(4);//Deploed
     }
 
+    public ModulBasys GetModulByStatus(ModulType type)
+    {
+        foreach (ModulBasys modul in modulController)
+        {
+            if (modul.modulType == type)
+            {
+                return modul;
+            }
+        }
+
+        return null;
+    }
+
     void ReCalculate()
     {
         //float sum = GetModulEnergySum() - (modulController[0].energyReloadQuoue);
@@ -358,7 +371,7 @@ public class BotController : MonoBehaviour
         foreach (ModulBasys modul in modulController)
         {
             {
-                //modul.energyReloadQuoue *= mLocalHash;
+                modul.energyReloadQuoue *= mLocalHash;
             }
         }
     }
@@ -371,7 +384,7 @@ public class BotController : MonoBehaviour
         {
             if (modulController[i].modulStatus == ModulStatus.On)
             {
-                //sum += modulController[i].energyReloadQuoue;
+                sum += modulController[i].energyReloadQuoue;
             }
         }
 

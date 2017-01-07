@@ -97,11 +97,11 @@ public class UI_TeamPanelController : MonoBehaviour
 
                     if (arrayBotController[i].botState == SM_BotState.Destroy)//Если мертвый бот
                     {
-                        unitButtonText[i].color = UI_Controller.disableColor;//Назначаем цвет имени бота "Выключен"
+                        unitButtonText[i].color = UI_Controller.Instance.disableColor;//Назначаем цвет имени бота "Выключен"
                     }
                     else
                     {
-                        unitButtonText[i].color = UI_Controller.enableColor;//Назначаем цвет имени бота "Включен"
+                        unitButtonText[i].color = UI_Controller.Instance.enableColor;//Назначаем цвет имени бота "Включен"
                     }
 
                     //Здесь рисуем рамочку вокруг того бота, который управляется игроком

@@ -7,7 +7,7 @@ public abstract class ProjectileBasys : MonoBehaviour
     public float powerMin;
     public float powerMax;
     public float energyCurrent = 0;
-    [HideInInspector] public float speed;
+    public float speed;
     protected Transform flyTransform;
     public float flyDistance = 100;//Максимальная дальность полёта снаряда
     public float currentFlyDistance;//Текущая дальность полёта снаряд

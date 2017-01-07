@@ -41,6 +41,7 @@ public class ModulPelvic :  ModulBasys
         if (moveTransform.position != oldPosition)
         {
             oldPosition = moveTransform.position;
+            ActionModul(EnergyPower);
         }
     }
 
@@ -53,5 +54,16 @@ public class ModulPelvic :  ModulBasys
     {
         base.GetDamage(damage, power, showFlyHit);
         return false;
+    }
+
+    public override float ReloadEnergy(float reloadEnergy)
+    {
+        if (EnergyPower < (reloadEnergy / 100) * energyReloadQuoue)
+        {
+            EnergyPower = (reloadEnergy / 100) * energyReloadQuoue;
+            return EnergyPower;
+        }
+
+        return 0;
     }
 }

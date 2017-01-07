@@ -25,7 +25,7 @@ public class ProjectileController : MonoBehaviour
         projectilBasys.gameObject.SetActive(false); 
     }
 
-    private void Start()
+    void Start()
     {
         parentTransform = thisTransform.parent;
         startPosition = thisTransform.localPosition;
@@ -101,6 +101,7 @@ public class ProjectileController : MonoBehaviour
         thisTransform.LookAt(directionLook);
         readyToShoot = false;
         readyToReload = false;
+        
         thisTransform.parent = null;
         projectilBasys.gameObject.SetActive(true);
     }

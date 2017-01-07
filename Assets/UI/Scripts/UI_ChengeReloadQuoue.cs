@@ -59,7 +59,7 @@ public class UI_ChengeReloadQuoue : MonoBehaviour
                 modulSlider[i].gameObject.SetActive(true);
                 activeSlider++;
                 modulSlider[i].onValueChanged.RemoveAllListeners();
-                //modulSlider[i].value = modulList[i].energyReloadQuoue;
+                modulSlider[i].value = modulList[i].energyReloadQuoue;
 
                 int index = modulSlider[i].GetComponent<RectTransform>().GetSiblingIndex();
 

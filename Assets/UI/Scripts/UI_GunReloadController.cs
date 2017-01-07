@@ -12,7 +12,7 @@ public class UI_GunReloadController : UI_BotInterfaceBasys
     public Slider ammoSlider;
     public Text reloadTimeText;
     public Slider reloadSlider;
-
+    public Image reloadImage;
     public ModulGun modul;
     private int botID;
 
@@ -67,13 +67,22 @@ public class UI_GunReloadController : UI_BotInterfaceBasys
     {
         base.CheckMenuState(modulStatus);
 
+        if (modul.EnergyValue <= modul.energyMinToAction)
+        {
+            reloadImage.color = allarmColor;
+        }
+        else
+        {
+            reloadImage.color = defaultColor;
+        }
+
         reloadTimeText.color = currentColor;
         nameWeaponText.color = currentColor;
         nameWeaponText.text = modul.information[0];
         ammoText.color = enableColor;
         reloadSlider.maxValue = modul.energyMaxValue;
-        reloadSlider.value = modul.energyValue;
-        reloadTimeText.text = modul.energyValue.ToString("f0");
+        reloadSlider.value = modul.EnergyValue;
+        reloadTimeText.text = modul.EnergyValue.ToString("f0");
         ammoSlider.maxValue = modul.maxAmmo;
         ammoSlider.value = modul.ammo;
         ammoText.text = modul.ammo.ToString("f0");

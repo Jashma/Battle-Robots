@@ -48,7 +48,11 @@ public class ModulGunController : ModulBasys
 
     void Rotation()
     {
-        thisTransform.rotation = Quaternion.RotateTowards(thisTransform.rotation, directionGun, SpeedRotation());
+        //thisTransform.rotation = Quaternion.RotateTowards(thisTransform.rotation, directionGun, SpeedRotation());
+        thisTransform.rotation = Quaternion.Slerp(thisTransform.rotation, directionGun, SpeedRotation());
+
+        Debug.DrawLine(gunTarget, thisTransform.position);
+        Debug.DrawLine(thisTransform.position, thisTransform.TransformPoint(Vector3.forward * 100));
 
         tempAngleGunX = 0;
         tempAngleGunY = 0;
@@ -95,6 +99,7 @@ public class ModulGunController : ModulBasys
         if (oldRotationY != Mathf.RoundToInt(thisTransform.localEulerAngles.y))
         {
             oldRotationY = Mathf.RoundToInt(thisTransform.localEulerAngles.y);
+            ActionModul(EnergyPower);
         }
     }
 
@@ -102,5 +107,16 @@ public class ModulGunController : ModulBasys
     {
         base.GetDamage(damage, power, showFlyHit);
         return false;
+    }
+
+    public override float ReloadEnergy(float reloadEnergy)
+    {
+        if (EnergyPower < (reloadEnergy / 100) * energyReloadQuoue)
+        {
+            EnergyPower = (reloadEnergy / 100) * energyReloadQuoue;
+            return EnergyPower;
+        }
+
+        return 0;
     }
 }

@@ -49,7 +49,7 @@ public class UI_EnergyBot : MonoBehaviour
                     if (modul.modulType == ModulType.Reactor)
                     {
                         modulController = modul.GetModulReactor();
-                        energySlider.maxValue = modulController.powerDefault;
+                        energySlider.maxValue = modulController.energyMaxValue;
                     }
                 }
             }
@@ -63,7 +63,7 @@ public class UI_EnergyBot : MonoBehaviour
                     currentValueText.text = modulController.EnergyPower.ToString("f0");
                 }
 
-                maxValueText.text = modulController.powerDefault.ToString("f0");
+                maxValueText.text = modulController.energyMaxValue.ToString("f0");
                 value = modulController.EnergyPower * 0.1f;
                 image.color = new Color(1 - value, value, 0);
                 colorDB = new Color(1 - value, value, 0);

@@ -3,7 +3,8 @@ using System.Collections;
 
 public class ModulBody : ModulBasys
 {
-    public float speedRotateBody = 3;//Скорость вращения
+    public float speedRotateDefault = 3;//Скорость вращения
+    public float speedRotateCurrent;
     public float limitRotationAngle = 0;//Ограничение вращения
 
     [HideInInspector]public Transform rotateTransform;
@@ -64,7 +65,8 @@ public class ModulBody : ModulBasys
 
     float SpeedRotation()
     {
-       return (EnergyPower * speedRotateBody) * Time.deltaTime;
+        speedRotateCurrent = (EnergyPower * speedRotateDefault) * Time.deltaTime;
+        return (EnergyPower * speedRotateDefault) * Time.deltaTime;
     }
 
     /*
@@ -100,6 +102,8 @@ public class ModulBody : ModulBasys
         if (oldRotationY != Mathf.RoundToInt(rotateTransform.localEulerAngles.y))
         {
             oldRotationY = Mathf.RoundToInt(rotateTransform.localEulerAngles.y);
+            ActionModul(EnergyPower);
+            
         }
 
         //Debug.DrawLine(botController.transform.position, transform.TransformPoint(Vector3.forward * 100), Color.yellow);
@@ -109,4 +113,14 @@ public class ModulBody : ModulBasys
 
     }
 
+    public override float ReloadEnergy(float reloadEnergy)
+    {
+        if (EnergyPower < (reloadEnergy / 100) * energyReloadQuoue)
+        {
+            EnergyPower = (reloadEnergy / 100) * energyReloadQuoue;
+            return EnergyPower;
+        }
+
+        return 0;
+    }
 }
